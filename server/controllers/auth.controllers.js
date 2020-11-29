@@ -1,6 +1,7 @@
 import User from './../models/User'
 import jwt from 'jsonwebtoken'
 import expressJwt from 'express-jwt'
+import { userById } from './user.controllers';
 
 const signin = async (req,res)=>{
     try {
@@ -79,4 +80,31 @@ const hasAdminAuth = async (req,res,next)=>{
     return next()
 }
 
-export {hasAuth,requireSignin,signin,signout,hasAdminAuth}
+const verify =async (req,res)=> {
+    try {
+        let user = await User.findById(req.params.userId)
+        if(user.verified){
+            return res.status(200).json({
+                message: "You've already confirmed your email!"
+            })
+        }
+        if(user.salt == req.params.verifyToken){
+            user.verified = true
+            await user.save()
+            return res.status(200).json({
+                message: 'Your account has been verified!'
+            })
+        }else{
+            return res.status(400).json({
+                error: 'Ivalid verify token!'
+            })
+        }
+    } catch (err) {
+        console.log(err);
+        return res.status(500).json({
+            error: 'Something went wrong!'
+        })
+    }
+}
+
+export {hasAuth,requireSignin,signin,signout,hasAdminAuth,verify}

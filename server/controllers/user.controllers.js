@@ -7,8 +7,7 @@ const create=async(req,res)=>{
         const user =new User(req.body) 
         await user.save()
         return res.status(201).json({
-            message: 'user created',
-            user
+            message: 'user created'
         })
     } catch (err) {
         console.log(err);

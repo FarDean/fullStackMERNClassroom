@@ -64,7 +64,7 @@ UserSchema.methods={
 
 
 UserSchema.pre('save', function () {
-    this.salt = crypto.randomBytes(20).toString('base64')
+    this.salt = crypto.randomBytes(20).toString('hex')
     this._password = this.password
     this.password = this.encryptPassword(this._password)
 })
