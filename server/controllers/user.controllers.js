@@ -38,14 +38,13 @@ const userById = async(req,res,next,id)=>{
             })
         }
         req.profile = user
+        return next()
     } catch (err) {
         console.log(err);
         return res.status(404).json({
             error: 'User doesnt exist!'
         })
     }
-
-    return next()
 }
 
 const read = (req,res)=>{

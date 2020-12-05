@@ -21,14 +21,14 @@ const signin = async (req,res)=>{
             error: 'Wrong password!'
         })
     
-        const token = jwt.sign({id:user._id},process.env.JWT_SECRET)
+        const token = jwt.sign({id:user._id,isAdmin:user.isAdmin},process.env.JWT_SECRET)
     
-        res.cookie('t',token)
+        res.cookie('jwt',token)
     
         return res.status(302).json(token)
     } catch (err) {
         console.log(err);
-        return res.status(200).json({
+        return res.status(500).json({
             error: 'Signing in failed!'
         })
     }
