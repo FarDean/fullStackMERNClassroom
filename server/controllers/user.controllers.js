@@ -1,6 +1,8 @@
 import User from './../models/User'
 import ErrorHandler from './../helpers/dbErrorHandler'
 import { extend } from "lodash";
+import formidable from 'formidable'
+import defaultproImage from './../../client/assets/images/default-avatar-profile-icon.jpg'
 
 const create=async(req,res)=>{
     try {
@@ -58,15 +60,32 @@ const read = (req,res)=>{
 
 const update = async(req,res)=>{
     try {
-        let user =req.profile
-        user = extend(user,req.body)
-        await user.save()
-        return res.status(201).json({
-            user:{
-                first_name:user.first_name,
-                last_name:user.last_name,
-            },
-            message:"user updated"
+        let form = new formidable.IncomingForm()
+        form.keepExtensions = true
+        form.parse(req,async(err,fields,files)=>{
+            if(err){
+                return res.status(400).json({
+                    error: "Photo couldn't be uploaded!"
+                })
+            }
+            if(fields.isAdmin && !req.auth.isAdmin){
+                return res.status(400).json({
+                    error: 'You dont have permission to change user roles!'
+                })
+            }
+            let user = req.profile
+            user = extend(user,fields)
+
+            if(files.image){
+                user.image.data =fs.readFileSync(files.image.path)
+                user.image.contentType = files.image.type
+            }
+
+            await user.save()
+            return res.status(201).json({
+                message: 'User Upldated!',
+                user
+            })
         })
     } catch (err) {
         console.log(err);
@@ -90,4 +109,16 @@ const remove = async(req,res)=>{
     }
 }
 
-export {remove,create,list,read,update,userById}
+const getImage = async(req,res)=>{
+    if(req.profile.data){
+        res.set('Content-Type',req.profile.image.contentType)
+        res.send(req.profile.image.data)
+    }
+    return next()
+}
+
+const defaultImage = async(req,res)=>{
+    res.send(process.cwd() + defaultproImage)
+}
+
+export {remove,create,list,read,update,userById,defaultImage,getImage}

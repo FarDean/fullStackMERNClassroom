@@ -17,6 +17,10 @@ module.exports={
                 test: /\.js$/,
                 exclude: /node_modules/,
                 use: ['babel-loader']
+            },
+            {
+                test: /\.(woff|ttf|eot|svg|gif|jpe?g|png)(\?[\s\S]+)?$/,
+                use: 'file-loader'
             }
         ]
     }

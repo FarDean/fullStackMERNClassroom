@@ -21,7 +21,7 @@ const signin = async (req,res)=>{
             error: 'Wrong password!'
         })
     
-        const token = jwt.sign({id:user._id,isAdmin:user.isAdmin},process.env.JWT_SECRET)
+        const token = jwt.sign({_id:user._id,isAdmin:user.isAdmin},process.env.JWT_SECRET)
     
         res.cookie('jwt',token)
     
@@ -49,8 +49,8 @@ const requireSignin = expressJwt({
 
 const hasAuth = async (req,res,next)=>{
     try {
-        const user = await User.findById(req.auth._id)
-        const autherized = req.auth && req.auth._id === user._id || user.isAdmin
+        const user = req.profile
+        const autherized = req.auth && req.auth._id == user._id || user.isAdmin
         if(!autherized) return res.status(401).json({
             error: 'You are not autherized!'
         })
@@ -107,4 +107,25 @@ const verify =async (req,res)=> {
     }
 }
 
-export {hasAuth,requireSignin,signin,signout,hasAdminAuth,verify}
+const isTeacher = async(req,res,next)=>{
+    const user = await User.findById(req.auth._id)
+    const isTeacher = user.isTeacher || user.isAdmin
+    if(!isTeacher){
+        return res.status(403).json({
+            error: 'User is not a teacher!'
+        })
+    }
+    return next()
+}
+
+const isStudent = async(req,res,next)=>{
+    const isStudent = req.auth && req.auth._id == req.enrollment.student._id
+    if(!isStudent) return res.status(401).json({
+        error: 'You havent enrolled in this course!',
+        id: req.auth._id,
+        an:req.enrollment.student._id
+    })
+    return next()
+}
+
+export {hasAuth,requireSignin,signin,signout,hasAdminAuth,verify,isTeacher,isStudent}

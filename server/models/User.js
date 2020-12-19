@@ -12,6 +12,10 @@ const UserSchema = new mongoose.Schema({
         trim:true,
         required:'Firstname is required!'
     },
+    image:{
+        data:Buffer,
+        contentType:String
+    },
     email:{
         type:String,
         unique:'Email already exists!',
@@ -38,10 +42,6 @@ const UserSchema = new mongoose.Schema({
         default:false
     },
     isTeacher:{
-        type:Boolean,
-        default:false
-    },
-    isStudent:{
         type:Boolean,
         default:false
     },
