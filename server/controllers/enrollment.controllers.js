@@ -8,7 +8,10 @@ const find =async(req,res,next)=>{
         if(!enrollment){
             return next()
         }else{
-            return res.status(200).json(enrollment)
+            return res.status(200).json({
+                enrollment,
+                message: 'You have already enrolled to this course!'
+            })
         }
     } catch (err) {
         console.log(err);
@@ -17,6 +20,7 @@ const find =async(req,res,next)=>{
         })
     }
 }
+
 
 const create = async(req,res)=>{
     let newEnrollment = {

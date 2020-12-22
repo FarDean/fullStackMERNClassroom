@@ -1,6 +1,6 @@
 import express from 'express'
 import {getImage,list,create,remove,update,read,courseById,newLesson,listByInstructor,listPublished} from "./../controllers/course.controllers";
-import { hasAdminAuth, hasAuth,isTeacher,requireSignin } from "./../controllers/auth.controllers";
+import { hasAdminAuth, hasAuth,isStudent,isTeacher,requireSignin } from "./../controllers/auth.controllers";
 import {userById} from './../controllers/user.controllers'
 
 const router = express.Router()
@@ -14,7 +14,7 @@ router.param('userId',userById)
 
 router.route('/api/v1/courses/:courseId')
     .put(requireSignin,isTeacher,update)
-    .get(requireSignin)
+    .get(read)
     .delete(requireSignin,isTeacher,remove)
 
 router.route('/api/v1/courses/:courseId/image')
@@ -24,7 +24,7 @@ router.route('/api/v1/courses/:courseId/image')
 router.route('/api/v1/courses/by/:userId')
     .get(requireSignin,listByInstructor)
 
-// Add Lessons Route
+// Add Lessons 
 router.route('/api/v1/courses/:courseId/lesson/new')
     .put(requireSignin,isTeacher,newLesson)
 

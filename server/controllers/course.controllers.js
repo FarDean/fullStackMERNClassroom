@@ -73,6 +73,7 @@ const courseById = async(req,res,next,id)=>{
 }
 
 const read = (req,res)=>{
+    req.course.lessons = undefined
     return res.status(200).json(req.course)
 }
 

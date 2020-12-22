@@ -1,7 +1,6 @@
 import User from './../models/User'
 import jwt from 'jsonwebtoken'
 import expressJwt from 'express-jwt'
-import { userById } from './user.controllers';
 
 const signin = async (req,res)=>{
     try {
@@ -35,7 +34,7 @@ const signin = async (req,res)=>{
 }
 
 const signout = (req,res)=>{
-    res.clearCookie('t')
+    res.clearCookie('jwt')
     return res.status(200).json({
         message: 'Signed out!'
     })
@@ -121,9 +120,7 @@ const isTeacher = async(req,res,next)=>{
 const isStudent = async(req,res,next)=>{
     const isStudent = req.auth && req.auth._id == req.enrollment.student._id
     if(!isStudent) return res.status(401).json({
-        error: 'You havent enrolled in this course!',
-        id: req.auth._id,
-        an:req.enrollment.student._id
+        error: 'You havent enrolled in this course!'
     })
     return next()
 }

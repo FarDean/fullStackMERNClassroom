@@ -51,11 +51,34 @@ const userById = async(req,res,next,id)=>{
 
 const read = (req,res)=>{
     let user = req.profile
-    if(!user.isAdmin){
-        user.email= undefined
-        user.phone = undefined
-    }
+    user.email= undefined
+    user.phone = undefined
     return res.status(200).json(user)
+}
+
+const personalInfo = (req,res)=>{
+    return res.status(200).json(req.profile)
+}
+
+const confirmPassword = async(req,res,next)=>{
+    try {
+        const user = await User.findById(req.auth._id)
+        const password = req.body.password
+        if(!password) return res.status(400).json({
+            error: 'Enter password!'
+        })
+        if(!user.matchPasswords(password)) return res.status(400).json({
+            error: 'Wrong password!',
+            u:user.matchPasswords(password),
+            user
+        })
+        return next()
+    } catch (err) {
+        console.log(err);
+        return res.status(500).json({
+            error:ErrorHandler.getErrorMessage(err)
+        })
+    }
 }
 
 const update = async(req,res)=>{
@@ -121,4 +144,4 @@ const defaultImage = async(req,res)=>{
     res.send(process.cwd() + defaultproImage)
 }
 
-export {remove,create,list,read,update,userById,defaultImage,getImage}
+export {remove,create,list,read,update,userById,defaultImage,getImage,confirmPassword,personalInfo}
