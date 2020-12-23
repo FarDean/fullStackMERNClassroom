@@ -420,7 +420,7 @@ export const GlobalProvider = ({children}) => {
         }
     }
 
-    async function stats(params) {
+    async function getStats(params) {
         try {
             const res = await axios.get('/api/v1/stats/' +params.courseId)
 
@@ -439,12 +439,34 @@ export const GlobalProvider = ({children}) => {
     return (
         <GlobalContext.Provider value={{
             users:state.users,
-            loading:state.loading,
+            user:state.user,
             error:state.error,
+            message:state.message,
+            courses:state.courses,
+            course:state.course,
             publishedCourses:state.publishedCourses,
+            enrollment:state.enrollment,
+            userEnrollments:state.userEnrollments,
+            stats:state.stats,
             registerUser,
             listUsers,
-            signIn
+            readUser,
+            updateUser,
+            signIn,
+            signOut,
+            getPublishedCourses,
+            courseByUser,
+            addLesson,
+            getAllCourses,
+            createCourse,
+            getCourse,
+            editCourse,
+            deleteCourse,
+            enroll,
+            getEnrollment,
+            getAllEnrollments,
+            completeLesson,
+            getStats
         }}>
             {children}
         </GlobalContext.Provider>
