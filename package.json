@@ -28,6 +28,8 @@
     "webpack-node-externals": "^2.5.2"
   },
   "dependencies": {
+    "@ant-design/icons": "^4.3.0",
+    "antd": "^4.9.4",
     "axios": "^0.21.0",
     "compression": "^1.7.4",
     "cookie-parser": "^1.4.5",
