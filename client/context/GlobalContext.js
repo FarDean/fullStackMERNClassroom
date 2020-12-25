@@ -128,20 +128,22 @@ export const GlobalProvider = ({children}) => {
 
     /**************************        USER AUTH          **********************/ 
 
-    async function signIn(user) {
+    async function signIn(user,cb) {
         const config = {
             withCredentials:true
         }
 
         try {
             await axios.post('/auth/signin',user,config)
+            cb()
         } catch (err) {
             dispatch({
                 type: 'ERROR',
                 payload: err.response.data.error
             })
         }
-        
+
+
     }
 
     async function signOut() {
@@ -466,7 +468,8 @@ export const GlobalProvider = ({children}) => {
             getEnrollment,
             getAllEnrollments,
             completeLesson,
-            getStats
+            getStats,
+            setToNull
         }}>
             {children}
         </GlobalContext.Provider>
