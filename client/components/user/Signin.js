@@ -31,15 +31,23 @@ export default function Signin() {
 
         signIn(user,setLoading(false))
     }
+    useEffect(() => {
+        console.log(error);
+        setToNull()
+    }, [])
 
-    console.log(loading);
+
 
     useEffect(() => {
         error && message.error(error)
         setTimeout(() => {
             setToNull()
         }, 5000);
+        return () => {
+            setToNull()
+        }
     }, [error])
+
 
     return (
         <Layout style={{minHeight:'95vh'}}>
@@ -68,7 +76,7 @@ export default function Signin() {
                                     </Button>
                                 </Col>
                                 <Col>
-                                    Or <Link to='/register'>register now!</Link>
+                                    Or <Link to='/signup'>register now!</Link>
 
                                 </Col>
                             </Row>

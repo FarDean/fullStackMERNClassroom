@@ -31,6 +31,7 @@ export const GlobalProvider = ({children}) => {
     async function registerUser(user){
         try {
             const res = await axios.post('/api/v1/users/',user)
+            console.log(typeof res.data.message);
             dispatch({
                 type: 'REGISTER_USER',
                 payload: res.data.message
