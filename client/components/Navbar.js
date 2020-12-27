@@ -52,7 +52,12 @@ export default function Navbar() {
                                 <Menu.Item key='signup'>
                                     <Link to='/signup'>Sign Up</Link>
                                 </Menu.Item>
-
+                                <Menu.Item key='profile'>
+                                    <Link to='/profile'>Profile</Link>
+                                </Menu.Item>
+                                <Menu.Item key='users'>
+                                    <Link to='/users'>Users</Link>
+                                </Menu.Item>
                             </Menu>
                         </Col>
 
@@ -83,7 +88,12 @@ export default function Navbar() {
                     <Menu.Item key='signup'>
                         <Link to='/signup'>Sign Up</Link>
                     </Menu.Item>
-
+                    <Menu.Item key='profile'>
+                        <Link to='/profile'>Profile</Link>
+                    </Menu.Item>
+                    <Menu.Item key='users'>
+                        <Link to='/users'>Users</Link>
+                    </Menu.Item>
                 </Menu>
             </Drawer>
         </Layout>

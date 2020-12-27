@@ -44,21 +44,24 @@ export const GlobalProvider = ({children}) => {
         }
     }
 
-    async function listUsers(token) {
+    async function listUsers(jwt) {
         const config = {
-            cancelToken:token.token
+            // cancelToken:token.token
+            headers:{
+                'Authorization' : 'Bearer ' + jwt
+            }
         }
         try {
-            const res = await axios.get('/api/v1/users/',config)
+            const res = await axios.get('/api/v1/users',config)
 
             dispatch({
                 type: 'LIST_USERS',
                 payload : res.data
             })
         } catch (err) {
-            if(axios.isCancel(err)){
-                console.log(err);
-            }
+            // if(axios.isCancel(err)){
+            //     console.log(err);
+            // }
             dispatch({
                 type: 'ERROR',
                 payload: err.response.data.error
@@ -69,12 +72,12 @@ export const GlobalProvider = ({children}) => {
     async function readUser(jwt,params) {
         const config = {
             headers:{
-                'Autherization' : 'Bearer ' + jwt
+                'Authorization' : 'Bearer ' + jwt
             }
         }
 
         try {
-            const res =await axios.get('/api/v1/users' + params.uersId , config)
+            const res =await axios.get('/api/v1/users/' + params.userId , config)
 
             dispatch({
                 type: 'READ_USER',
@@ -91,7 +94,7 @@ export const GlobalProvider = ({children}) => {
     async function updateUser(jwt,params,updatedUser) {
         const config = {
             headers: {
-                'Autherization' : 'Bearer ' + jwt
+                'Authorization' : 'Bearer ' + jwt
             }
         }
 
@@ -113,7 +116,7 @@ export const GlobalProvider = ({children}) => {
     async function deleteUser(jwt,params) {
         const config = {
             headers: {
-                'Autherization' : 'Bearer ' + jwt
+                'Authorization' : 'Bearer ' + jwt
             }
         }
 
@@ -186,7 +189,7 @@ export const GlobalProvider = ({children}) => {
     async function courseByUser(jwt,params) {
         const config = {
             headers: {
-                'Autherization' : 'Bearer ' + jwt
+                'Authorization' : 'Bearer ' + jwt
             }
         }
         try {
@@ -208,7 +211,7 @@ export const GlobalProvider = ({children}) => {
     async function addLesson(jwt,params,lesson) {
         const config = {
             headers: {
-                'Autherization' : 'Bearer ' + jwt
+                'Authorization' : 'Bearer ' + jwt
             }
         }
 
@@ -253,7 +256,7 @@ export const GlobalProvider = ({children}) => {
     async function createCourse(jwt,course) {
         const config = {
             headers: {
-                'Autherization' : 'Bearer ' + jwt
+                'Authorization' : 'Bearer ' + jwt
             }
         }
 
@@ -291,7 +294,7 @@ export const GlobalProvider = ({children}) => {
     async function editCourse(jwt,params,updatedCourse) {
         const config = {
             headers: {
-                'Autherization' : 'Bearer ' + jwt
+                'Authorization' : 'Bearer ' + jwt
             }
         }
 
@@ -313,7 +316,7 @@ export const GlobalProvider = ({children}) => {
     async function deleteCourse(jwt,params) {
         const config = {
             headers: {
-                'Autherization' : 'Bearer ' + jwt
+                'Authorization' : 'Bearer ' + jwt
             }
         }
 
@@ -338,7 +341,7 @@ export const GlobalProvider = ({children}) => {
     async function enroll(jwt,params) {
         const config = {
             headers: {
-                'Autheriztion': 'Bearer ' + jwt 
+                'Authoriztion': 'Bearer ' + jwt 
             }
         }
 
@@ -360,7 +363,7 @@ export const GlobalProvider = ({children}) => {
     async function getEnrollment(jwt,params) {
         const config = {
             headers: {
-                'Autheriztion': 'Bearer ' + jwt 
+                'Authoriztion': 'Bearer ' + jwt 
             }
         }
 
@@ -382,7 +385,7 @@ export const GlobalProvider = ({children}) => {
     async function getAllEnrollments(jwt) {
         const config = {
             headers: {
-                'Autheriztion': 'Bearer ' + jwt 
+                'Authoriztion': 'Bearer ' + jwt 
             }
         }
 
@@ -404,7 +407,7 @@ export const GlobalProvider = ({children}) => {
     async function completeLesson(jwt,params,updatedEnrollment) {
         const config = {
             headers: {
-                'Autheriztion': 'Bearer ' + jwt 
+                'Authoriztion': 'Bearer ' + jwt 
             }
         }
 

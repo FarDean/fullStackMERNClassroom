@@ -2,8 +2,9 @@ import User from './../models/User'
 import ErrorHandler from './../helpers/dbErrorHandler'
 import { extend } from "lodash";
 import formidable from 'formidable'
-import defaultproImage from './../../client/assets/images/default-avatar-profile-icon.jpg'
-
+// import defaultproImage from './../../client/assets/images/default-avatar-profile-icon.jpg'
+import defaultproImage from './../../client/assets/images/kos.jpg'
+import path from 'path'
 const create=async(req,res)=>{
     try {
         const user =new User(req.body) 
@@ -132,7 +133,7 @@ const remove = async(req,res)=>{
     }
 }
 
-const getImage = async(req,res)=>{
+const getImage = async(req,res,next)=>{
     if(req.profile.data){
         res.set('Content-Type',req.profile.image.contentType)
         res.send(req.profile.image.data)
@@ -141,7 +142,7 @@ const getImage = async(req,res)=>{
 }
 
 const defaultImage = async(req,res)=>{
-    res.send(process.cwd() + defaultproImage)
+    return res.sendFile(path.join(__dirname +'/' + defaultproImage))
 }
 
 export {remove,create,list,read,update,userById,defaultImage,getImage,confirmPassword,personalInfo}

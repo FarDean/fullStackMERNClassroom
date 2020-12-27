@@ -1,9 +1,7 @@
 import React,{useEffect,useState,useContext} from 'react'
 import { Layout,Divider } from 'antd';
 import { Form, Input, Button,Select} from 'antd';
-import {  LockOutlined,MailOutlined } from '@ant-design/icons';
 import { Row, Col } from 'antd';
-import { authenticated } from "./../../helpers/api-auth";
 import { message as msg } from 'antd';
 import { GlobalContext } from './../../context/GlobalContext'
 import {Redirect} from 'react-router-dom'
@@ -14,8 +12,6 @@ const { Option } = Select;
 
 export default function Signup() {
     const {error,message,registerUser,setToNull} = useContext(GlobalContext)
-    const [first_name, setFirst_name] = useState('')
-    const [last_name, setLast_name] = useState('')
     const [loading, setLoading] = useState(false)
 
     const onFinish = (user) => {
@@ -31,9 +27,6 @@ export default function Signup() {
             setToNull()
         }
     }, [error,message])
-
-    console.log(message);
-    console.log(error);
 
     
     const formItemLayout = {

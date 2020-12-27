@@ -8,13 +8,7 @@ import { Row, Col } from 'antd';
 import { authenticated } from "./../../helpers/api-auth";
 import { message } from 'antd';
 
-const layout = {
-    xs: { span: 20 },
-    sm: { span: 16 },
-    md: {span:12},
-    lg: {span:8},
-    xl: {span:6}
-};
+
 
 export default function Signin() {
     const {signIn,error,setToNull} = useContext(GlobalContext)
@@ -40,14 +34,18 @@ export default function Signin() {
 
     useEffect(() => {
         error && message.error(error)
-        setTimeout(() => {
-            setToNull()
-        }, 5000);
         return () => {
             setToNull()
         }
     }, [error])
 
+    const layout = {
+        xs: { span: 20 },
+        sm: { span: 16 },
+        md: {span:12},
+        lg: {span:8},
+        xl: {span:6}
+    };
 
     return (
         <Layout style={{minHeight:'95vh'}}>

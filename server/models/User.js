@@ -20,7 +20,7 @@ const UserSchema = new mongoose.Schema({
         type:String,
         unique:'Email already exists!',
         required:'Email is required!',
-        match: [/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/, 'Please enter a valid email address!']
+        match: [/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/, 'Please enter a valid email address!'],
     },
     phone:{
         type:Number,
@@ -31,6 +31,10 @@ const UserSchema = new mongoose.Schema({
         type:String,
         required: 'Password is required!',
         match:[/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/,'Password must be Minimum eight characters, at least one letter and one number!']
+    },
+    description:{
+        type:String,
+        maxlength:25
     },
     salt:String,
     title:{

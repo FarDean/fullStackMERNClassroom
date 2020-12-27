@@ -11,7 +11,7 @@ const signin = async (req,res)=>{
             })
         }
     
-        const user = await User.findOne({email})
+        const user = await User.findOne({email}).collation({ locale: 'en', strength: 1 })
         if(!user)return res.status(404).json({
             error: 'User not found!'
         })
