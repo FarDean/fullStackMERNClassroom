@@ -6,6 +6,8 @@ import { Row, Col, Space } from 'antd';
 import { Menu } from 'antd';
 import { Drawer, Button } from 'antd';
 import { MenuUnfoldOutlined,MenuFoldOutlined } from '@ant-design/icons'
+import { authenticated } from "./../helpers/api-auth";
+import jwt_decode from "jwt-decode";
 
 import MediaQuery from 'react-responsive'
 
@@ -31,6 +33,12 @@ export default function Navbar() {
         console.log('click ', e);
         setCurrent(e.key)
     }
+
+
+    const decoded = jwt_decode(authenticated());
+    console.log(decoded._id);
+
+
     return (
         <Layout>
             <Header style={{backgroundColor:'wheat'}}>
@@ -42,19 +50,22 @@ export default function Navbar() {
                     <MediaQuery minWidth={800}>
                         <Col>
                             <Menu onClick={handleClick} selectedKeys={[current]} mode='horizontal' style={{backgroundColor:'inherit'}}>
-
-                                <Menu.Item key='signin'>
-                                    <Link to='/signin'>Sign In</Link>
-                                </Menu.Item>
                                 <Menu.Item key='home'>
                                     <Link to='/'>Home</Link>
                                 </Menu.Item>
+                                <Menu.Item key='signin'>
+                                    <Link to='/signin'>Sign In</Link>
+                                </Menu.Item>
+
                                 <Menu.Item key='signup'>
                                     <Link to='/signup'>Sign Up</Link>
                                 </Menu.Item>
+                                {authenticated() &&
                                 <Menu.Item key='profile'>
-                                    <Link to='/profile'>Profile</Link>
-                                </Menu.Item>
+                                    <Link to={`/profile/${decoded._id}`}>Profile</Link>
+                                </Menu.Item> 
+                                }
+                                
                                 <Menu.Item key='users'>
                                     <Link to='/users'>Users</Link>
                                 </Menu.Item>

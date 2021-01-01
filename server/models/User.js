@@ -71,6 +71,8 @@ UserSchema.pre('save', function () {
     this.salt = crypto.randomBytes(20).toString('hex')
     this._password = this.password
     this.password = this.encryptPassword(this._password)
+    if(this.isAdmin) this.title = 'Administrator'
+    if(this.isTeacher) this.title = 'Teacher'
 })
 
 
