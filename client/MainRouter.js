@@ -6,6 +6,7 @@ import Navbar from './components/Navbar'
 import Signup from './components/user/Signup'
 import Profile from './components/user/Profile'
 import Users from './components/user/Users'
+import Editprofile from './components/user/Editprofile'
 
 export default function MainRouter() {
     return (
@@ -17,6 +18,7 @@ export default function MainRouter() {
                 <Route exact path='/signup' component={Signup} />
                 <Route exact path='/users' component={Users} />
                 <Route exact path='/profile/:userId' component={Profile} />
+                <Route exact path='/profile/edit/:userId' component={Editprofile} />
             </Switch>
 
         </>

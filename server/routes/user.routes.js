@@ -16,7 +16,7 @@ router.route('/api/v1/users/:userId')
     .delete(requireSignin,hasAuth,remove)
 
 router.route('/api/v1/users/info/:userId')
-    .get(requireSignin,confirmPassword,personalInfo)
+    .post(requireSignin,confirmPassword,personalInfo)
 
 router.route('/api/v1/users/:userId/image')
     .get(getImage,defaultImage)

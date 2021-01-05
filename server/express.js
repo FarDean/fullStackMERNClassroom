@@ -26,6 +26,10 @@ app.use(compress())
 app.use(express.json())
 app.use(express.urlencoded({extended:true}))
 app.use(helmet())
+app.use(function(req, res, next) {
+    res.setHeader("Content-Security-Policy", "img-src 'self' blob:");
+    return next();
+});
 
 app.use('/dist',express.static(path.join(CURRENT_WORKING_DIRECTORY,'dist')))
 

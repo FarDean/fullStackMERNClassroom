@@ -21,7 +21,6 @@ export default function Users() {
             setToNull()
         }
     }, [error])
-    console.log(users);
 
 
     return (
@@ -33,7 +32,7 @@ export default function Users() {
                         itemLayout='horizontal'
                         dataSource={users}
                         renderItem={user=>(
-                            <List.Item>
+                            <List.Item key={user._id}>
                                 <List.Item.Meta
                                     avatar={<Avatar src={`/api/v1/users/`+ user._id + `/image`} />}
                                     title={<Link to={"/profile/" + user._id}>{user.first_name} {user.last_name}</Link>}

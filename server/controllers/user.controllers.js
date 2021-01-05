@@ -2,9 +2,9 @@ import User from './../models/User'
 import ErrorHandler from './../helpers/dbErrorHandler'
 import { extend } from "lodash";
 import formidable from 'formidable'
-// import defaultproImage from './../../client/assets/images/default-avatar-profile-icon.jpg'
 import defaultproImage from './../../client/assets/images/kos.jpg'
 import path from 'path'
+
 const create=async(req,res)=>{
     try {
         const user =new User(req.body) 
@@ -69,10 +69,11 @@ const confirmPassword = async(req,res,next)=>{
             error: 'Enter password!'
         })
         if(!user.matchPasswords(password)) return res.status(400).json({
-            error: 'Wrong password!',
-            u:user.matchPasswords(password),
-            user
+            error: 'Wrong password!'
         })
+
+        res.cookie('dAuth','1',{expires: new Date(Date.now() + (15*60*1000))})
+
         return next()
     } catch (err) {
         console.log(err);

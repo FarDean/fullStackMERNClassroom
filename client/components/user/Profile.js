@@ -25,7 +25,7 @@ export default function Profile({match}) {
         if(authenticated()){
             if(user.isAdmin || jwt_decode(authenticated())._id === user._id){
                 return <Tooltip placement="top" title='Edit Profile'>
-                    <Link to='/'><Button><EditOutlined key="edit" /></Button></Link>
+                    <Link to={`/profile/edit/${jwt_decode(authenticated())._id}`}><Button><EditOutlined key="edit" /></Button></Link>
                     </Tooltip>
             }else return null
         }else return null

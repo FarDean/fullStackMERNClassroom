@@ -25,12 +25,6 @@ export default function Signin() {
 
         signIn(user,setLoading(false))
     }
-    useEffect(() => {
-        console.log(error);
-        setToNull()
-    }, [])
-
-
 
     useEffect(() => {
         error && message.error(error)

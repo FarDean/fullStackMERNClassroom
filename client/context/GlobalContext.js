@@ -12,7 +12,8 @@ const initialState = {
     course: {},
     enrollment: {},
     userEnrollments: [],
-    stats:{}
+    stats:{},
+    personalInfo:{}
 }
 
 export const GlobalContext = createContext(initialState)
@@ -122,6 +123,28 @@ export const GlobalProvider = ({children}) => {
 
         try {
             const res = await axios.delete('/api/v1/users/' + params.userId,config)
+        } catch (err) {
+            dispatch({
+                type: 'ERROR',
+                payload: err.response.data.error
+            })
+        }
+    }
+
+    async function getPersonalInfo(jwt,params,password) {
+        const config = {
+            headers: {
+                'Authorization' : 'Bearer ' + jwt
+            }
+        }
+
+        try {
+            const res = await axios.post('/api/v1/users/info/' + params.userId,password,config)
+
+            dispatch({
+                type:'GET_PERSONAL_INFO',
+                payload: res.data
+            })
         } catch (err) {
             dispatch({
                 type: 'ERROR',
@@ -454,6 +477,7 @@ export const GlobalProvider = ({children}) => {
             enrollment:state.enrollment,
             userEnrollments:state.userEnrollments,
             stats:state.stats,
+            personalInfo:state.personalInfo,
             registerUser,
             listUsers,
             readUser,
@@ -473,7 +497,8 @@ export const GlobalProvider = ({children}) => {
             getAllEnrollments,
             completeLesson,
             getStats,
-            setToNull
+            setToNull,
+            getPersonalInfo
         }}>
             {children}
         </GlobalContext.Provider>

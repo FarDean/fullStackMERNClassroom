@@ -122,6 +122,12 @@ export default (state,action)=>{
                 stats: action.payload
             }
 
+        case 'GET_PERSONAL_INFO':
+            return {
+                ...state,
+                personalInfo: action.payload
+            }
+
         default:
             return state
     }

@@ -1,4 +1,4 @@
-import React,{useState} from 'react'
+import React,{useState,useEffect} from 'react'
 import { Link } from "react-router-dom";
 import { Layout } from 'antd';
 import { Typography } from 'antd';
@@ -30,13 +30,8 @@ export default function Navbar() {
     };
 
     function handleClick(e) {
-        console.log('click ', e);
         setCurrent(e.key)
     }
-
-
-    const decoded = jwt_decode(authenticated());
-    console.log(decoded._id);
 
 
     return (
@@ -62,7 +57,7 @@ export default function Navbar() {
                                 </Menu.Item>
                                 {authenticated() &&
                                 <Menu.Item key='profile'>
-                                    <Link to={`/profile/${decoded._id}`}>Profile</Link>
+                                    <Link to={`/profile/${jwt_decode(authenticated())._id}`}>Profile</Link>
                                 </Menu.Item> 
                                 }
                                 
