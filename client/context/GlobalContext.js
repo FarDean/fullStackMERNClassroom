@@ -95,13 +95,14 @@ export const GlobalProvider = ({children}) => {
     async function updateUser(jwt,params,updatedUser) {
         const config = {
             headers: {
-                'Authorization' : 'Bearer ' + jwt
+                'Authorization' : 'Bearer ' + jwt,
+                'content-type': 'multipart/form-data',
             }
         }
 
         try {
             const res = await axios.put('/api/v1/users/' + params.userId,updatedUser,config)
-
+            console.log(res.data);
             dispatch({
                 type: 'UPDATE_USER',
                 payload: res.data.message

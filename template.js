@@ -1,4 +1,4 @@
-export default ()=> {
+export default (markup)=> {
     return `
     <!DOCTYPE html>
     <html lang="en">
@@ -8,7 +8,7 @@ export default ()=> {
         <title>Document</title>
     </head>
     <body>
-        <div id="root"></div>
+        <div id="root">${markup}</div>
         <script type="text/javascript" src="/dist/bundle.js"></script>
     </body>
     </html>

@@ -13,6 +13,12 @@ import authRouter from './routes/auth.routes'
 import enrollmentRouter from './routes/enrollment.routes'
 import courseRouter from './routes/course.routes'
 
+// Server Sid stuff
+import React from 'react'
+import { renderToString } from "react-dom/server";
+import {StaticRouter} from "react-router-dom";
+import MainRouter from './../client/MainRouter'
+
 import {compile} from './devBundle'
 compile(app)
 
@@ -38,8 +44,15 @@ app.use('/',authRouter)
 app.use('/',courseRouter)
 app.use('/',enrollmentRouter)
 
-app.get('/',(req,res)=>{
-    return res.send(Template())
+app.get('/*',(req,res)=>{
+    const context = {}
+    const markup = renderToString(
+        <StaticRouter location={req.url} context={context}>
+            <MainRouter />
+        </StaticRouter>
+    )
+    if(context.url) return res.redirect(303,context.url)
+    return res.status(200).send(Template(markup))
 })
 
 app.use((err,req,res,next)=>{

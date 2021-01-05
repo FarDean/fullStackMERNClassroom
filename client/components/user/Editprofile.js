@@ -6,7 +6,7 @@ import { PlusOutlined,LoadingOutlined } from '@ant-design/icons';
 import { message as msg}  from "antd";
 
 export default function Editprofile({match}) {
-    const {error,personalInfo,getPersonalInfo,setToNull,user} = useContext(GlobalContext)
+    const {error,personalInfo,getPersonalInfo,setToNull,user,updateUser,message} = useContext(GlobalContext)
     const [loading, setLoading] = useState(false)
 
     const layout = {
@@ -26,10 +26,11 @@ export default function Editprofile({match}) {
 
     useEffect(() => {
         error && msg.error(error)
-        return () => {
+        message && msg.success(message)
+        return ()=>{
             setToNull()
         }
-    }, [error])
+    }, [error,message])
 
     // form Component
     function Passform() {
@@ -67,8 +68,6 @@ export default function Editprofile({match}) {
     function Edit() {
         const [imageUrl, setImageUrl] = useState(`/api/v1/users/${user._id}/image`)
         const [loading, setLoading] = useState(false)
-        const [img, setImg] = useState(undefined)
-
 
         const prefixSelector = (
             <Form.Item name="prefix" noStyle rules={[
@@ -102,11 +101,17 @@ export default function Editprofile({match}) {
         //   Upload
         const onFinish = (user) => {
             setLoading(true)
-            console.log(user)
+            updateUser(authenticated(),match.params,user)
             setLoading(false)
         };
 
-
+        console.log(message);
+        console.log(error);
+        function revokeUrl() {
+            setTimeout(() => {
+                URL.revokeObjectURL(imageUrl)
+            }, 10000);
+        }
 
         return (
             <Col style={{width:'90%'}}>
@@ -114,7 +119,7 @@ export default function Editprofile({match}) {
                     <Image
                         width={100}
                         src={imageUrl}
-                        onLoad={URL.revokeObjectURL(imageUrl)}
+                        onLoad={revokeUrl}
                     />
                 </Row>
                     
@@ -122,8 +127,8 @@ export default function Editprofile({match}) {
                     onFinish={onFinish}
                     {...formItemLayout}
                 >
-                    <Form.Item style={{overflow:'hidden'}} label='Profile Photo'>
-                        <Input type='file' onChange={e=>console.log(URL.createObjectURL(e.target.files[0]))} />
+                    <Form.Item name='image' style={{overflow:'hidden'}} label='Profile Photo'>
+                        <Input type='file' onChange={e=>setImageUrl(URL.createObjectURL(e.target.files[0]))} />
                     </Form.Item>
                     <Form.Item
                         name='first_name'
