@@ -1,6 +1,6 @@
 import express from 'express'
-import { hasAuth,requireSignin } from './../controllers/auth.controllers'
-import { remove,create,list,read,update,userById,getImage,defaultImage, confirmPassword, personalInfo } from "./../controllers/user.controllers";
+import { hasAuth,requireSignin,requireDAuth } from './../controllers/auth.controllers'
+import { remove,create,list,read,update,userById,getImage,defaultImage, personalInfo } from "./../controllers/user.controllers";
 
 const router = express.Router()
 
@@ -16,7 +16,7 @@ router.route('/api/v1/users/:userId')
     .delete(requireSignin,hasAuth,remove)
 
 router.route('/api/v1/users/info/:userId')
-    .post(requireSignin,confirmPassword,personalInfo)
+    .get(requireSignin,requireDAuth,personalInfo)
 
 router.route('/api/v1/users/:userId/image')
     .get(getImage,defaultImage)

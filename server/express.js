@@ -7,6 +7,7 @@ const app = express()
 import cors from 'cors'
 import compress from 'compression'
 import helmet from 'helmet'
+import cookieParser from 'cookie-parser'
 
 import userRouter from './routes/user.routes'
 import authRouter from './routes/auth.routes'
@@ -31,6 +32,7 @@ app.use(cors())
 app.use(compress())
 app.use(express.json())
 app.use(express.urlencoded({extended:true}))
+app.use(cookieParser())
 app.use(helmet())
 app.use(function(req, res, next) {
     res.setHeader("Content-Security-Policy", "img-src 'self' blob:");

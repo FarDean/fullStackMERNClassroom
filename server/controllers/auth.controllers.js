@@ -125,4 +125,33 @@ const isStudent = async(req,res,next)=>{
     return next()
 }
 
-export {hasAuth,requireSignin,signin,signout,hasAdminAuth,verify,isTeacher,isStudent}
+const dAuth = async (req,res,next)=>{
+    try {
+        const user = await User.findById(req.auth._id)
+        const password = req.body.password
+        if(!password) return res.status(400).json({
+            error: 'Enter password!'
+        })
+        if(!user.matchPasswords(password)) return res.status(400).json({
+            error: 'Wrong password!'
+        })
+
+        res.cookie('dAuth','1',{expires: new Date(Date.now() + (15*60*1000))})
+        return next()
+    } catch (err) {
+        console.log(err);
+        return res.status(500).json({
+            error: 'Somthing went Wrong'
+        })
+    }
+}
+
+const requireDAuth = async(req,res,next)=> {
+    if(!req.cookies.dAuth) return res.status(401).json({
+        error: 'You are not authorized!'
+    })
+
+    return next()
+}
+
+export {hasAuth,requireSignin,signin,signout,hasAdminAuth,verify,isTeacher,isStudent,dAuth,requireDAuth}

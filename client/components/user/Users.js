@@ -30,6 +30,7 @@ export default function Users() {
                 <Col span={10} offset={8}>
                     <List 
                         itemLayout='horizontal'
+                        loading={loading}
                         dataSource={users}
                         renderItem={user=>(
                             <List.Item key={user._id}>
@@ -38,6 +39,7 @@ export default function Users() {
                                     title={<Link to={"/profile/" + user._id}>{user.first_name} {user.last_name}</Link>}
                                     description={user.description}
                                     />
+                                <div>{user.title}</div>
                             </List.Item>
                         )}
                     />

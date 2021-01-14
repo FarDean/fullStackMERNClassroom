@@ -32,7 +32,7 @@ export const GlobalProvider = ({children}) => {
     async function registerUser(user){
         try {
             const res = await axios.post('/api/v1/users/',user)
-            console.log(typeof res.data.message);
+
             dispatch({
                 type: 'REGISTER_USER',
                 payload: res.data.message
@@ -102,7 +102,6 @@ export const GlobalProvider = ({children}) => {
 
         try {
             const res = await axios.put('/api/v1/users/' + params.userId,updatedUser,config)
-            console.log(res.data);
             dispatch({
                 type: 'UPDATE_USER',
                 payload: res.data.message
@@ -132,7 +131,7 @@ export const GlobalProvider = ({children}) => {
         }
     }
 
-    async function getPersonalInfo(jwt,params,password) {
+    async function getPersonalInfo(jwt,params) {
         const config = {
             headers: {
                 'Authorization' : 'Bearer ' + jwt
@@ -140,8 +139,7 @@ export const GlobalProvider = ({children}) => {
         }
 
         try {
-            const res = await axios.post('/api/v1/users/info/' + params.userId,password,config)
-
+            const res = await axios.get('/api/v1/users/info/' + params.userId,config)
             dispatch({
                 type:'GET_PERSONAL_INFO',
                 payload: res.data
@@ -182,6 +180,22 @@ export const GlobalProvider = ({children}) => {
                 type: 'SIGN_OUT',
                 payload:res.data.message
             })
+        } catch (err) {
+            dispatch({
+                type: 'ERROR',
+                payload: err.response.data.error
+            })
+        }
+    }
+
+    async function dAuth(jwt,password) {
+        const config = {
+            headers: {
+                'Authorization' : 'Bearer ' + jwt
+            }
+        }
+        try {
+            await axios.post('/auth/dauth',password,config)
         } catch (err) {
             dispatch({
                 type: 'ERROR',
@@ -485,6 +499,7 @@ export const GlobalProvider = ({children}) => {
             updateUser,
             signIn,
             signOut,
+            dAuth,
             getPublishedCourses,
             courseByUser,
             addLesson,

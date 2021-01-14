@@ -52,7 +52,9 @@ export default function Signin() {
                         <Form.Item name='email' rules={[{ required: true, message: 'Please input your Email!' },{type: 'email',message: 'The input is not valid E-mail!'}]}>
                             <Input prefix={<MailOutlined className="site-form-item-icon" />} placeholder="Email" onChange={e=>{setEmail(e.target.value)}} />
                         </Form.Item>
-                        <Form.Item name='password' rules={[{ required: true, message: 'Please input your Password!' }]}>
+                        <Form.Item name='password'
+                            rules={[{ required: true, message: 'Please input your Password!' }]}
+                        >
                         <Input.Password
                             prefix={<LockOutlined className="site-form-item-icon" />}
                             type="password"

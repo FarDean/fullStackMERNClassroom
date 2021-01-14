@@ -6,6 +6,10 @@ import Navbar from './components/Navbar'
 import Signup from './components/user/Signup'
 import Profile from './components/user/Profile'
 import Users from './components/user/Users'
+import PrivateRoute from './helpers/PrivateRoute'
+import DAuth from './components/user/DAuth'
+import Editpro from './components/user/Editpro'
+import RestrictedRoute from './helpers/RestrictedRoute'
 import Editprofile from './components/user/Editprofile'
 
 export default function MainRouter() {
@@ -16,9 +20,11 @@ export default function MainRouter() {
                 <Route exact path='/' component={Home} />
                 <Route exact path='/signin' component={Signin} />
                 <Route exact path='/signup' component={Signup} />
-                <Route exact path='/users' component={Users} />
-                <Route exact path='/profile/:userId' component={Profile} />
-                <Route exact path='/profile/edit/:userId' component={Editprofile} />
+                <PrivateRoute exact path='/users' component={Users} />
+                <PrivateRoute exact path='/profile/:userId' component={Profile} />
+                {/* <Route exact path='/profile/edit/:userId' component={Editpro} /> */}
+                <PrivateRoute exact path='/dauth' component={DAuth} />
+                <RestrictedRoute exact path='/profile/edit/:userId' component={Editprofile} />
             </Switch>
 
         </>

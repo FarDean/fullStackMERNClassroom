@@ -4,6 +4,7 @@ import { extend } from "lodash";
 import formidable from 'formidable'
 import defaultproImage from './../../client/assets/images/kos.jpg'
 import path from 'path'
+import fs from 'fs'
 
 const create=async(req,res)=>{
     try {
@@ -61,28 +62,6 @@ const personalInfo = (req,res)=>{
     return res.status(200).json(req.profile)
 }
 
-const confirmPassword = async(req,res,next)=>{
-    try {
-        const user = await User.findById(req.auth._id)
-        const password = req.body.password
-        if(!password) return res.status(400).json({
-            error: 'Enter password!'
-        })
-        if(!user.matchPasswords(password)) return res.status(400).json({
-            error: 'Wrong password!'
-        })
-
-        res.cookie('dAuth','1',{expires: new Date(Date.now() + (15*60*1000))})
-
-        return next()
-    } catch (err) {
-        console.log(err);
-        return res.status(500).json({
-            error:ErrorHandler.getErrorMessage(err)
-        })
-    }
-}
-
 const update = async(req,res)=>{
     try {
         let form = new formidable.IncomingForm()
@@ -135,9 +114,9 @@ const remove = async(req,res)=>{
 }
 
 const getImage = async(req,res,next)=>{
-    if(req.profile.data){
+    if(req.profile.image.data){
         res.set('Content-Type',req.profile.image.contentType)
-        res.send(req.profile.image.data)
+        return res.send(req.profile.image.data)
     }
     return next()
 }
@@ -146,4 +125,4 @@ const defaultImage = async(req,res)=>{
     return res.sendFile(path.join(__dirname +'/' + defaultproImage))
 }
 
-export {remove,create,list,read,update,userById,defaultImage,getImage,confirmPassword,personalInfo}
+export {remove,create,list,read,update,userById,defaultImage,getImage,personalInfo}

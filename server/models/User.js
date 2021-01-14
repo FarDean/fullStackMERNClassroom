@@ -5,12 +5,16 @@ const UserSchema = new mongoose.Schema({
     first_name:{
         type:String,
         trim:true,
-        required:'Firstname is required!'
+        required:'Firstname is required!',
+        minlength:[3,'First name must be at least 3 charachers!'],
+        maxlength:[15,'First name must be maximum 15 characters!']
     },
     last_name:{
         type:String,
         trim:true,
-        required:'Firstname is required!'
+        required:'Firstname is required!',
+        minlength:[3,'Last name must be at least 3 charachers!'],
+        maxlength:[15,'Last name must be maximum 15 characters!']
     },
     image:{
         data:Buffer,
@@ -62,18 +66,17 @@ UserSchema.methods={
         return crypto.createHmac('sha256',this.salt).update(text).digest('hex')
     },
     matchPasswords: function(text){
+        console.log(this.password);
         return this.encryptPassword(text) === this.password
     }
 }
 
-
-UserSchema.pre('save', function () {
+UserSchema.pre('save', function save(next) {
+    if (!this.isModified('password')) return next();
     this.salt = crypto.randomBytes(20).toString('hex')
-    this._password = this.password
-    this.password = this.encryptPassword(this._password)
-    if(this.isAdmin) this.title = 'Administrator'
-    if(this.isTeacher) this.title = 'Teacher'
-})
+    this.password = this.encryptPassword(this.password)
+    return next();
+  });
 
 
 UserSchema.path('phone').validate(function(v){
