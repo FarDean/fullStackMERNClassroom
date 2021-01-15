@@ -497,6 +497,7 @@ export const GlobalProvider = ({children}) => {
             listUsers,
             readUser,
             updateUser,
+            deleteUser,
             signIn,
             signOut,
             dAuth,

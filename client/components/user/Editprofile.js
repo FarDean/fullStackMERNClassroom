@@ -1,7 +1,7 @@
 import React,{useState,useContext,useEffect} from 'react'
 import { GlobalContext } from "./../../context/GlobalContext";
 import { decodedJwt,authenticated } from "./../../helpers/api-auth";
-import { Upload, message as msg, Row, Col,Form,Divider,Input,Select,Switch,Button } from 'antd';
+import { Upload, message as msg, Row, Col,Form,Divider,Input,Select,Switch,Button,Popconfirm } from 'antd';
 import { LoadingOutlined, PlusOutlined } from '@ant-design/icons';
 import FormData from 'form-data'
 import { Redirect } from "react-router-dom";
@@ -9,11 +9,12 @@ import Layout from 'antd/lib/layout/layout';
 import jwtDecode from 'jwt-decode';
 
 export default function Editprofile({match}) {
-    const {message, error, getPersonalInfo,setToNull,updateUser,personalInfo} = useContext(GlobalContext)
+    const {message, error, getPersonalInfo,setToNull,updateUser,personalInfo,deleteUser} = useContext(GlobalContext)
     const [loading, setLoading] = useState(false)
     const [imageUrl, setImageUrl] = useState(`/api/v1/users/${match.params.userId}/image`)
     const [imageHash, setImageHash] = useState(Date.now())
     const [redirect, setRedirect] = useState(false)
+    const [deleteRedirect, setdeleteRedirect] = useState(false)
 
     const [first_name, setFirst_name] = useState('')
     const [last_name, setLast_name] = useState('')
@@ -119,6 +120,14 @@ export default function Editprofile({match}) {
           <div style={{ marginTop: 8 }}>Upload</div>
         </div>
       );
+
+      // Delete stuff (popconfirm)
+        function onConfirm() {
+          setLoading(true)
+          deleteUser(authenticated(),match.params)
+          setLoading(false)
+          setdeleteRedirect(true)
+        }
 
     return (
       <Layout style={{minHeight:'95vh'}}>
@@ -251,11 +260,23 @@ export default function Editprofile({match}) {
                               </Button>
                           </Form.Item>
                       </Col>
+                      <Col>
+                          <Popconfirm
+                            title='Do you want to delete your account?'
+                            onConfirm={onConfirm}
+                            okButtonProps={loading}
+                          >
+                            <Button type='dashed' danger style={{marginLeft:'25px'}}>
+                              Delete Account
+                            </Button>
+                          </Popconfirm>
+                      </Col>
                   </Row>
             </Form.Item>
           </Form>
         </Row>
         {redirect && <Redirect push to={`/profile/${jwtDecode(authenticated())._id}`} /> }
+        {deleteRedirect && <Redirect push to='/' />}
       </Layout>
      
         

@@ -78,6 +78,8 @@ const update = async(req,res)=>{
                 })
             }
             let user = req.profile
+            if(fields.isTeacher) user.title = 'Teacher'
+            if(fields.isAdmin) user.isAdmin = 'Administrator'
             user = extend(user,fields)
 
             if(files.image){
