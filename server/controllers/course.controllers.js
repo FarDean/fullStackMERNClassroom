@@ -4,43 +4,42 @@ import { extend } from "lodash";
 import formidable from 'formidable'
 import fs from 'fs'
 
-const create = async(req,res)=>{
+const create = async(req,res,next)=>{
     try {
-        let form = new formidable.IncomingForm()
-        form.keepExtensions = true
+        let form =  new formidable.IncomingForm()
         form.parse(req,async(err,fields,files)=>{
             if(err){
                 return res.status(400).json({
-                    error: "Photo couldn't be uploaded!"
+                    error: "Photos couldn't be uploaded!"
                 })
             }
             let course = new Course(fields)
             course.instructor = req.auth._id
 
-            // const course = new Course({
-            //     name:fields.name,
-            //     description: fields.description,
-            //     image: fields.image,
-            //     category: fields.category,
-            //     instructor:req.auth._id
-            // })
-            if(files.image){
-                course.image.data =fs.readFileSync(files.image.path)
-                course.image.contentType = files.image.type
+            if(files){
+                for(let i in files){
+                    course.images.push({
+                        data:fs.readFileSync(files[i].path),
+                        contentType:files[i].type
+                    })
+                }
             }
 
             await course.save()
+
             return res.status(201).json({
                 message: 'Course Created!',
                 course
             })
         })
+        
     } catch (err) {
         console.log(err);
         return res.status(500).json({
-            error: ErrorHandler.getErrorMessage(err)
+            error:ErrorHandler.getErrorMessage(err)
         })
     }
+        
 }
 
 const list = async(req,res)=>{
@@ -127,8 +126,9 @@ const remove = async(req,res)=>{
 }
 
 const getImage = (req,res)=>{
-    res.set('Content-Type',req.course.image.contentType)
-    return res.send(req.course.image.data)
+    const photo = req.course.images.find(x=>x._id== req.params.imageId)
+    res.set('Content-Type',photo.contentType)
+    return res.send(photo.data)
 }
 
 // Adding lessons

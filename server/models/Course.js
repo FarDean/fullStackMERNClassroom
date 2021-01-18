@@ -19,10 +19,10 @@ const CourseSchema = new mongoose.Schema({
         trim: true,
         required: 'Description is Required'
     },
-    image: {
+    images: [{
         data:Buffer,
         contentType: String
-    },
+    }],
     category: {
         type: String,
         required: 'Category is Required',

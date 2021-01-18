@@ -11,13 +11,14 @@ router.route('/api/v1/courses')
 
 router.param('courseId',courseById)
 router.param('userId',userById)
+// router.param('imageId')
 
 router.route('/api/v1/courses/:courseId')
     .put(requireSignin,isTeacher,update)
     .get(read)
     .delete(requireSignin,isTeacher,remove)
 
-router.route('/api/v1/courses/:courseId/image')
+router.route('/api/v1/courses/:courseId/image/:imageId')
 .get(getImage)
 
 // List courses of specific user

@@ -26,9 +26,22 @@ export default function Profile({match}) {
                 return <Tooltip placement="top" title='Edit Profile'>
                     <Link to={`/profile/edit/${jwt_decode(authenticated())._id}`}><Button><EditOutlined key="edit" /></Button></Link>
                     </Tooltip>
+
             }else return null
         }else return null
     }
+
+    const editAction = (
+        jwt_decode(authenticated()).isAdmin || jwt_decode(authenticated())._id === user._id && 
+        <Tooltip placement="top" title='Edit Profile'>
+        <Link to={`/profile/edit/${jwt_decode(authenticated())._id}`}><Button><EditOutlined key="edit" /></Button></Link>
+        </Tooltip>
+    )
+
+    const addCourseAction = (
+        jwt_decode(authenticated())._id === user._id && user.isTeacher &&
+        <Link to='/course/add'><Button type='primary'>Create new course</Button></Link>
+    )
 
     return (
         <Layout>
@@ -39,7 +52,8 @@ export default function Profile({match}) {
                         <Card
                             cover={<img alt='kos' src={`/api/v1/users/${match.params.userId}/image`} />}
                             actions={[
-                                checkAuth()
+                                editAction,
+                                addCourseAction
                             ]}
                         >
                             <Meta
