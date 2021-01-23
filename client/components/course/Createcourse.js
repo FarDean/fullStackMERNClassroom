@@ -4,6 +4,7 @@ import { Divider,Layout,Row,Col,Form,Steps,Input,Upload,Button,Select,message as
 import { LoadingOutlined,UploadOutlined } from '@ant-design/icons';
 import { authenticated } from "./../../helpers/api-auth";
 import FormData from 'form-data'
+import { Redirect } from "react-router-dom";
 
 const {Step} = Steps;
 const {Option} = Select;
@@ -11,6 +12,7 @@ const {Option} = Select;
 export default function Createcourse() {
     const {error,message,setToNull,createCourse} = useContext(GlobalContext)
     const [loading, setLoading] = useState(false)
+    const [redirect, setRedirect] = useState(false)
 
     const [name, setName] = useState('')
     const [description, setDescription] = useState('')
@@ -61,8 +63,8 @@ export default function Createcourse() {
           course.append('name',name)
           course.append('description',description)
 
-          course.append(`images`,images)
-          course.append('image2',image2)
+          images && course.append(`images`,images)
+          image2 && course.append('image2',image2)
           
           course.append('category',category)
           for (var key of course.entries()) {
@@ -71,6 +73,7 @@ export default function Createcourse() {
 
           createCourse(authenticated(),course)
           setLoading(false)
+          setRedirect(true)
       }
 
 
@@ -170,6 +173,7 @@ export default function Createcourse() {
                     </Form>
                 </Col>
             </Row>
+            {redirect && <Redirect to='/course/addlesson' />}
         </Layout>
     )
 }

@@ -127,6 +127,7 @@ const remove = async(req,res)=>{
 
 const getImage = (req,res)=>{
     const photo = req.course.images.find(x=>x._id== req.params.imageId)
+    if(!photo)return res.status(404).json({error: 'Photo not found!'})
     res.set('Content-Type',photo.contentType)
     return res.send(photo.data)
 }

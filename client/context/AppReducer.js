@@ -62,6 +62,12 @@ export default (state,action)=>{
                 course:action.payload
             }
 
+        case 'COURSE_BY_USER':
+            return {
+                ...state,
+                courseByUser:action.payload
+            }
+
         case 'GET_ALL_COURSES':
             return {
                 ...state,
@@ -71,7 +77,8 @@ export default (state,action)=>{
         case 'CREATE_COURSE':
             return {
                 ...state,
-                message: action.payload
+                message: action.payload.message,
+                course : action.payload.course
             }
 
         case 'GET_COURSE':

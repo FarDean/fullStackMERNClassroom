@@ -10,6 +10,7 @@ const initialState = {
     publishedCourses:[],
     courses: [],
     course: {},
+    courseByUser:[],
     enrollment: {},
     userEnrollments: [],
     stats:{},
@@ -224,7 +225,7 @@ export const GlobalProvider = ({children}) => {
 
 
     // List courses by specific user
-    async function courseByUser(jwt,params) {
+    async function getCourseByUser(jwt,params) {
         const config = {
             headers: {
                 'Authorization' : 'Bearer ' + jwt
@@ -303,7 +304,7 @@ export const GlobalProvider = ({children}) => {
 
             dispatch({
                 type: 'CREATE_COURSE',
-                payload: res.data.message
+                payload: res.data
             })
         } catch (err) {
             dispatch({
@@ -489,6 +490,7 @@ export const GlobalProvider = ({children}) => {
             courses:state.courses,
             course:state.course,
             publishedCourses:state.publishedCourses,
+            courseByUser:state.courseByUser,
             enrollment:state.enrollment,
             userEnrollments:state.userEnrollments,
             stats:state.stats,
@@ -502,7 +504,7 @@ export const GlobalProvider = ({children}) => {
             signOut,
             dAuth,
             getPublishedCourses,
-            courseByUser,
+            getCourseByUser,
             addLesson,
             getAllCourses,
             createCourse,

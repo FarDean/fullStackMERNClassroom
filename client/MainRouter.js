@@ -12,6 +12,7 @@ import Editpro from './components/user/Editpro'
 import RestrictedRoute from './helpers/RestrictedRoute'
 import Editprofile from './components/user/Editprofile'
 import Createcourse from './components/course/Createcourse'
+import Addlesson from './components/course/Addlesson'
 
 export default function MainRouter() {
     return (
@@ -27,6 +28,7 @@ export default function MainRouter() {
                 <PrivateRoute exact path='/dauth' component={DAuth} />
                 <RestrictedRoute exact path='/profile/edit/:userId' component={Editprofile} />
                 <PrivateRoute exact path='/course/add' component={Createcourse} />
+                <PrivateRoute exact path='/course/addlesson' component={Addlesson} />
             </Switch>
 
         </>
