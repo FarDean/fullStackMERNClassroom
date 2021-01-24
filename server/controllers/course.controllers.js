@@ -135,10 +135,13 @@ const getImage = (req,res)=>{
 // Adding lessons
 const newLesson = async(req,res)=>{
     try {
-        const lesson = req.body.lesson
+        const lesson = req.body
         if(lesson){
             const updatedCourse = await Course.findByIdAndUpdate(req.course._id,{$push:{lessons:lesson}},{new:true}).populate('instructor') 
-            return res.status(200).json(updatedCourse)
+            return res.status(200).json({
+                course:updatedCourse,
+                message:'Lesson Added!'
+            })
         }else{
             return res.status(400).json({
                 error: 'No lessons!'

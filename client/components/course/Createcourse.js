@@ -10,7 +10,7 @@ const {Step} = Steps;
 const {Option} = Select;
 
 export default function Createcourse() {
-    const {error,message,setToNull,createCourse} = useContext(GlobalContext)
+    const {error,message,setToNull,createCourse,course} = useContext(GlobalContext)
     const [loading, setLoading] = useState(false)
     const [redirect, setRedirect] = useState(false)
 
@@ -173,7 +173,7 @@ export default function Createcourse() {
                     </Form>
                 </Col>
             </Row>
-            {redirect && <Redirect to='/course/addlesson' />}
+            {redirect && <Redirect to={`/course/addlesson/${course._id}`}  />}
         </Layout>
     )
 }

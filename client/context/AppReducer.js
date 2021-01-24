@@ -59,7 +59,8 @@ export default (state,action)=>{
         case 'ADD_LESSON':
             return {
                 ...state,
-                course:action.payload
+                course:action.payload.course,
+                message:action.payload.message
             }
 
         case 'COURSE_BY_USER':

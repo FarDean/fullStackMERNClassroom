@@ -28,7 +28,7 @@ export default function MainRouter() {
                 <PrivateRoute exact path='/dauth' component={DAuth} />
                 <RestrictedRoute exact path='/profile/edit/:userId' component={Editprofile} />
                 <PrivateRoute exact path='/course/add' component={Createcourse} />
-                <PrivateRoute exact path='/course/addlesson' component={Addlesson} />
+                <PrivateRoute exact path='/course/addlesson/:courseId' component={Addlesson} />
             </Switch>
 
         </>
