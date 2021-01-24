@@ -14,12 +14,10 @@ const { TabPane } = Tabs;
 
 export default function Profile({match}) {
     const [loading, setLoading] = useState(true)
-    const {readUser,error,user} = useContext(GlobalContext)
+    const {readUser,user} = useContext(GlobalContext)
 
     useEffect(() => {
-        setLoading(true)
-        const jwt = authenticated()
-        readUser(jwt,match.params)
+        readUser(authenticated(),match.params)
         setLoading(false)
     }, [match.params])
 

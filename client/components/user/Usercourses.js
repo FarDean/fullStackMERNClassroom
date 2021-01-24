@@ -2,9 +2,10 @@ import React,{useEffect,useState,useContext} from 'react'
 import { GlobalContext } from "./../../context/GlobalContext";
 import { authenticated } from "./../../helpers/api-auth";
 import { Spin,List,Typography } from "antd";
+import { ExclamationCircleOutlined } from "@ant-design/icons";
 
 export default function Usercourses({match}) {
-    const {message,error,courseByUser,getCourseByUser} = useContext(GlobalContext)
+    const {courseByUser,getCourseByUser} = useContext(GlobalContext)
 
     const [loading, setLoading] = useState(true)
 
@@ -13,8 +14,6 @@ export default function Usercourses({match}) {
         getCourseByUser(authenticated(),match.params)
         setLoading(false)
     }, [])
-
-    console.log(courseByUser);
 
     if(loading) return <Spin />
     return (
@@ -25,7 +24,7 @@ export default function Usercourses({match}) {
                 dataSource={courseByUser}
                 renderItem={item => (
                     <List.Item>
-                    <Typography.Text mark>{item.published ? 'Published':'Not published yet'}</Typography.Text> {item.name}
+                    <ExclamationCircleOutlined style={{color:'orange',marginRight:'2px'}} /><Typography.Text style={{marginRight:'15px'}} type={item.published ? 'success':'warning'}>{item.published ? 'Published':'Draft'}</Typography.Text> {item.name}
                     </List.Item>
                 )}
             />
