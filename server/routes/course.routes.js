@@ -1,5 +1,5 @@
 import express from 'express'
-import {getImage,list,create,remove,update,read,courseById,newLesson,listByInstructor,listPublished} from "./../controllers/course.controllers";
+import {getImage,list,create,remove,update,read,courseById,newLesson,listByInstructor,listPublished,readAll} from "./../controllers/course.controllers";
 import { hasAdminAuth, hasAuth,isStudent,isTeacher,requireSignin } from "./../controllers/auth.controllers";
 import {userById} from './../controllers/user.controllers'
 
@@ -32,5 +32,9 @@ router.route('/api/v1/courses/:courseId/lesson/new')
 // List Published Courses
 router.route('/api/v1/courses/published')
     .get(listPublished)
+
+// get course for edit
+router.route('/api/v1/courses/:courseId/:userId')
+    .get(requireSignin,readAll)
 
 export default router;

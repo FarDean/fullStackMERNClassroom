@@ -87,6 +87,12 @@ export default (state,action)=>{
                 ...state,
                 course:action.payload
             }
+        
+        case 'GET_COURSE_PRIVATE':
+            return {
+                ...state,
+                course:action.payload
+            }
 
         case 'UPDATE_COURSE':
             return {

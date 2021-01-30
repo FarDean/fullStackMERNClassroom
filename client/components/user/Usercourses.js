@@ -1,8 +1,8 @@
 import React,{useEffect,useState,useContext} from 'react'
 import { GlobalContext } from "./../../context/GlobalContext";
 import { authenticated } from "./../../helpers/api-auth";
-import { Spin,List,Typography } from "antd";
-import { ExclamationCircleOutlined } from "@ant-design/icons";
+import { Spin,List,Typography,Button,Tooltip } from "antd";
+import { ExclamationCircleOutlined ,EditOutlined, PlusSquareOutlined} from "@ant-design/icons";
 import { Link } from "react-router-dom";
 
 export default function Usercourses({match}) {
@@ -19,7 +19,6 @@ export default function Usercourses({match}) {
     if(loading) return <Spin />
     return (
         <>
-
             <List
                 bordered
                 dataSource={courseByUser}
@@ -27,6 +26,13 @@ export default function Usercourses({match}) {
                     <List.Item>
                     <span><ExclamationCircleOutlined style={{color:'orange',marginRight:'2px'}} /><Typography.Text style={{marginRight:'15px'}} type={item.published ? 'success':'warning'}>{item.published ? 'Published':'Draft'}</Typography.Text></span>
                     <span><Link to={`/course/addlesson/${item._id}`} >{item.name}</Link></span>
+                    {!item.published &&
+                    <>
+                        <Tooltip placement='top' title='Add Lesson'><span><Link to={`/course/addlesson/${item._id}`}><Button><PlusSquareOutlined /></Button></Link></span></Tooltip>
+                        <Tooltip placement='top' title={'Review '+'&'+' Publish!'}><span><Link to={'/course/review/' + item._id}><Button><EditOutlined /></Button></Link></span></Tooltip>
+                    </>
+                    }
+
                     </List.Item>
                 )}
             />

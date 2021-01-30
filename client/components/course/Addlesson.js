@@ -8,10 +8,11 @@ import { Link } from 'react-router-dom';
 const {Step} = Steps
 
 export default function Addlesson({match}) {
-    const {course,getCourse,addLesson,error,message,setToNull} = useContext(GlobalContext)
+    const {getCourse,addLesson,error,message,setToNull} = useContext(GlobalContext)
     const [loading, setLoading] = useState(false)
     const [open, setOpen] = useState(false)
 
+    const [form] = Form.useForm();
 
     useEffect(() => {
         setLoading(true)
@@ -21,7 +22,6 @@ export default function Addlesson({match}) {
 
     useEffect(() => {
         error && msg.error(error)
-
         return ()=>{
             setToNull()
         }
@@ -29,9 +29,6 @@ export default function Addlesson({match}) {
 
     useEffect(() => {
         message && setOpen(true)
-        return () => {
-            setToNull()
-        }
     }, [message])
 
     const layout = {
@@ -45,19 +42,23 @@ export default function Addlesson({match}) {
     function onFinish(values) {
         setLoading(true)
         addLesson(authenticated(),match.params,values)
-        console.log(values);
         setLoading(false)
     }
     console.log(message);
 
+    function handleAdd() {
+        setOpen(false)
+        form.resetFields()
+    }
+
     return (
-        <Layout>
+        <Layout style={{minHeight:'95vh'}}>
             <Divider orientation="left" style={{marginBottom:'95px'}}>Add Lessons</Divider>
             <Col style={{width:'65%',margin:'0 auto 45px auto',}}>
                 <Steps size="small" current={1}>
                     <Step title="Create course" />
                     <Step title="Add lessons" icon={<LoadingOutlined />} />
-                    <Step title="Publish!" />
+                    <Step title={'Review '+'&'+' Publish!'} />
                 </Steps>
             </Col>
             
@@ -65,6 +66,7 @@ export default function Addlesson({match}) {
                     name='add lessons'
                     {...layout}
                     onFinish={onFinish}
+                    form={form}
                 >
                     <Form.Item
                         name='title'
@@ -92,7 +94,7 @@ export default function Addlesson({match}) {
                         <Input />
                     </Form.Item>
                     <Form.Item {...tailLayout}>
-                        <Button type="primary" htmlType="submit">
+                        <Button type="primary" htmlType="submit" loading={loading}>
                         Submit
                         </Button>
                     </Form.Item>
@@ -105,10 +107,10 @@ export default function Addlesson({match}) {
                         status="success"
                         title={message}
                         extra={[
-                        <Button type="primary" key="console">
+                        <Button onClick={handleAdd} type="primary" key="console">
                             Add another lesson!
                         </Button>,
-                        <Link to='/'><Button key="next">Next!</Button></Link>,
+                        <Link to={'/course/review/' + match.params.courseId}><Button key="next">Next!</Button></Link>,
                         ]}
                     />
                 </Modal>

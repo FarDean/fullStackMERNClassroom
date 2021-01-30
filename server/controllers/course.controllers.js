@@ -76,6 +76,14 @@ const read = (req,res)=>{
     return res.status(200).json(req.course)
 }
 
+const readAll = (req,res)=>{
+    if(req.profile._id.equals(req.course.instructor._id) || req.profile.isAdmin)return res.status(200).json(req.course)
+    // console.log(req.course.instructor);
+    return res.status(401).json({
+        error: 'You are not authorized!'
+    })
+}
+
 const update =async (req,res)=>{
     try {
         let form = new formidable.IncomingForm()
@@ -181,4 +189,4 @@ const listPublished = async(req,res)=>{
     }    
 }
 
-export {getImage,list,create,remove,update,read,courseById,newLesson,listByInstructor,listPublished}
+export {getImage,list,create,remove,update,read,courseById,newLesson,listByInstructor,listPublished,readAll}

@@ -13,6 +13,7 @@ import RestrictedRoute from './helpers/RestrictedRoute'
 import Editprofile from './components/user/Editprofile'
 import Createcourse from './components/course/Createcourse'
 import Addlesson from './components/course/Addlesson'
+import ReviewCourse from './components/course/ReviewCourse'
 
 export default function MainRouter() {
     return (
@@ -29,6 +30,7 @@ export default function MainRouter() {
                 <RestrictedRoute exact path='/profile/edit/:userId' component={Editprofile} />
                 <PrivateRoute exact path='/course/add' component={Createcourse} />
                 <PrivateRoute exact path='/course/addlesson/:courseId' component={Addlesson} />
+                <PrivateRoute exact path='/course/review/:courseId' component={ReviewCourse} />
             </Switch>
 
         </>

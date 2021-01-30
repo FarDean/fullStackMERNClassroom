@@ -93,7 +93,7 @@ export default function Createcourse() {
                 <Steps size="small" current={0}>
                     <Step title="Create course" icon={<LoadingOutlined />} />
                     <Step title="Add lessons" />
-                    <Step title="Publish!" />
+                    <Step title={'Review '+'&'+' Publish!'} />
                 </Steps>
             </Col>
 

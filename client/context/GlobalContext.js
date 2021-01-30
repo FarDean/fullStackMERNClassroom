@@ -330,6 +330,28 @@ export const GlobalProvider = ({children}) => {
         }
     }
 
+    async function getCoursePrivate(jwt,params,userId) {
+        const config ={
+            headers: {
+                'Authorization' : 'Bearer ' + jwt
+            }
+        }
+
+        try {
+            const res = await axios.get(`/api/v1/courses/${params.courseId}/${userId}`,config)
+
+            dispatch({
+                type:'GET_COURSE_PRIVATE',
+                payload: res.data
+            })
+        } catch (err) {
+            dispatch({
+                type: 'ERROR',
+                payload: err.response.data.error
+            })
+        }
+    }
+
     async function editCourse(jwt,params,updatedCourse) {
         const config = {
             headers: {
@@ -509,6 +531,7 @@ export const GlobalProvider = ({children}) => {
             getAllCourses,
             createCourse,
             getCourse,
+            getCoursePrivate,
             editCourse,
             deleteCourse,
             enroll,
