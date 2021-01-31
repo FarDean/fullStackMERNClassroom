@@ -1,5 +1,5 @@
 import React,{useState,useEffect,useContext} from 'react'
-import { Layout,Steps ,Row,Divider,Col,Form,Input,Button,message as msg,Modal,Result} from "antd";
+import { Layout,Steps ,Row,Divider,Col,Form,Input,Button,message as msg,Modal,Result,Affix,Badge,Drawer} from "antd";
 import { GlobalContext } from "./../../context/GlobalContext";
 import { LoadingOutlined } from "@ant-design/icons";
 import { authenticated } from "./../../helpers/api-auth";
@@ -8,17 +8,14 @@ import { Link } from 'react-router-dom';
 const {Step} = Steps
 
 export default function Addlesson({match}) {
-    const {getCourse,addLesson,error,message,setToNull} = useContext(GlobalContext)
+    const {addLesson,error,message,setToNull} = useContext(GlobalContext)
     const [loading, setLoading] = useState(false)
     const [open, setOpen] = useState(false)
+    const [lessons, setLessons] = useState([])
+    const [drawerVisible, setDrawerVisible] = useState(false)
 
     const [form] = Form.useForm();
 
-    useEffect(() => {
-        setLoading(true)
-        getCourse(match.params)
-        setLoading(false)
-    }, [])
 
     useEffect(() => {
         error && msg.error(error)
@@ -42,11 +39,12 @@ export default function Addlesson({match}) {
     function onFinish(values) {
         setLoading(true)
         addLesson(authenticated(),match.params,values)
+        setLessons([...lessons,values])
         setLoading(false)
     }
-    console.log(message);
+    console.log(lessons);
 
-    function handleAdd() {
+    function handleAddAnother() {
         setOpen(false)
         form.resetFields()
     }
@@ -97,23 +95,39 @@ export default function Addlesson({match}) {
                         <Button type="primary" htmlType="submit" loading={loading}>
                         Submit
                         </Button>
+                        <Link key='kos' to={'/course/review/' + match.params.courseId}><Button key="next">Next!</Button></Link>
                     </Form.Item>
                 </Form>
                 <Modal
                     visible={open}
                     footer={null}
+                    closable={false}
                 >
                     <Result
                         status="success"
                         title={message}
                         extra={[
-                        <Button onClick={handleAdd} type="primary" key="console">
+                        <Button onClick={handleAddAnother} type="primary" key="console">
                             Add another lesson!
                         </Button>,
-                        <Link to={'/course/review/' + match.params.courseId}><Button key="next">Next!</Button></Link>,
+                        <Link key='kos' to={'/course/review/' + match.params.courseId}><Button key="next">Next!</Button></Link>,
                         ]}
                     />
                 </Modal>
+                <Affix offsetBottom={122} style={{marginLeft:'20px'}}>
+                    <Badge count={lessons.length}>
+                        <Button onClick={()=>setDrawerVisible(true)}>View added lessons</Button>
+                    </Badge>
+                </Affix>
+                <Drawer
+                title="Added lessons"
+                placement='left'
+                onClose={()=>setDrawerVisible(false)}
+                visible={drawerVisible}
+                key='left'
+                >
+                    {lessons.map(lesson=><div style={{color:'#F5DEB3'}}>{lesson.title}</div>)}
+                </Drawer>
         </Layout>
     )
 }

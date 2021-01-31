@@ -91,15 +91,22 @@ export default function Navbar() {
                     <Menu.Item key='home'>
                         <Link to='/'>Home</Link>
                     </Menu.Item>
+                    {!authenticated() && 
                     <Menu.Item key='signin'>
                         <Link to='/signin'>Sign In</Link>
                     </Menu.Item>
+                    }
+                    {!authenticated() &&
                     <Menu.Item key='signup'>
                         <Link to='/signup'>Sign Up</Link>
                     </Menu.Item>
+                    }
+                    {authenticated() &&
                     <Menu.Item key='profile'>
-                        <Link to='/profile'>Profile</Link>
-                    </Menu.Item>
+                        <Link to={`/profile/${jwt_decode(authenticated())._id}`}>Profile</Link>
+                    </Menu.Item> 
+                    }
+                    
                     <Menu.Item key='users'>
                         <Link to='/users'>Users</Link>
                     </Menu.Item>
