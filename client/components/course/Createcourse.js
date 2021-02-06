@@ -20,6 +20,8 @@ export default function Createcourse() {
     const [image2, setImage2] = useState(null)
     const [category, setCategory] = useState('')
 
+    const [fileList, setFileList] = useState([])
+
     useEffect(() => {
         error && msg.error(error)
         message && msg.success(message)
@@ -67,22 +69,24 @@ export default function Createcourse() {
           image2 && course.append('image2',image2)
           
           course.append('category',category)
-          for (var key of course.entries()) {
-            console.log(key[0] + ', ' + key[1]);
-        }
+        //   for (var key of course.entries()) {
+        //     console.log(key[0] + ', ' + key[1]);
+        // }
 
           createCourse(authenticated(),course)
           setLoading(false)
           setRedirect(true)
       }
 
-
+      function beforeUpload(file) {
+          setFileList([...fileList,file])
+      }
 
       function onRemove(file) {
-          const index = images.indexOf(file)
-          const newImages = images.slice()
-          newImages.splice(index,1)
-          setImages(newImages)
+          const index = fileList.indexOf(file)
+          const newFileList = fileList.slice()
+          newFileList.splice(index,1)
+          setFileList(newFileList)
         }
 
 
@@ -137,7 +141,7 @@ export default function Createcourse() {
                                 listType="text"
                                 maxCount={2}
                                 multiple
-                                beforeUpload={false}
+                                beforeUpload={beforeUpload}
                                 onRemove={onRemove}
                                 >
                                 <Button icon={<UploadOutlined />}>Upload (Max: 2)</Button>

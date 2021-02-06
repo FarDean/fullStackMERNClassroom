@@ -1,7 +1,7 @@
-import React,{useState,useEffect,useContext} from 'react'
+import React,{useState,useEffect,useContext,useRef} from 'react'
 import { Layout,Steps ,Row,Divider,Col,Form,Input,Button,message as msg,Modal,Result,Affix,Badge,Drawer} from "antd";
 import { GlobalContext } from "./../../context/GlobalContext";
-import { LoadingOutlined } from "@ant-design/icons";
+import { LoadingOutlined , DashboardOutlined} from "@ant-design/icons";
 import { authenticated } from "./../../helpers/api-auth";
 import { Link } from 'react-router-dom';
 
@@ -16,6 +16,7 @@ export default function Addlesson({match}) {
 
     const [form] = Form.useForm();
 
+    const focusTitle = useRef()
 
     useEffect(() => {
         error && msg.error(error)
@@ -42,12 +43,15 @@ export default function Addlesson({match}) {
         setLessons([...lessons,values])
         setLoading(false)
     }
-    console.log(lessons);
 
     function handleAddAnother() {
         setOpen(false)
         form.resetFields()
     }
+
+    useEffect(() => {
+        focusTitle.current.focus()
+    }, [])
 
     return (
         <Layout style={{minHeight:'95vh'}}>
@@ -71,7 +75,7 @@ export default function Addlesson({match}) {
                         label='Title'
                         rules={[{ required: true, message: 'Please Add a title!' }]}
                     >
-                        <Input />
+                        <Input ref={focusTitle} />
                     </Form.Item>
                     <Form.Item
                         name='content'
@@ -116,7 +120,7 @@ export default function Addlesson({match}) {
                 </Modal>
                 <Affix offsetBottom={122} style={{marginLeft:'20px'}}>
                     <Badge count={lessons.length}>
-                        <Button onClick={()=>setDrawerVisible(true)}>View added lessons</Button>
+                        <Button shape='round' icon={<DashboardOutlined />} onClick={()=>setDrawerVisible(true)}></Button>
                     </Badge>
                 </Affix>
                 <Drawer
