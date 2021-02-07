@@ -14,8 +14,9 @@ import {
 	message as msg,
 	Collapse,
 	Switch,
+	Modal,
 } from "antd";
-import { LoadingOutlined, UploadOutlined } from "@ant-design/icons";
+import { LoadingOutlined, UploadOutlined, PlusOutlined } from "@ant-design/icons";
 import { GlobalContext } from "./../../context/GlobalContext";
 import { authenticated, decodedJwt } from "./../../helpers/api-auth";
 import _ from "lodash";
@@ -33,16 +34,43 @@ export default function ReviewCourse({ match }) {
 		previewVisible: false,
 		previewImage: "",
 		previewTitle: "",
-		fileList: course.images.map(image => ({
-			uid: image._i,
-			status: "done",
-			url: `/api/v1/courses/${course._id}/image/${image._id}`,
-		})),
+		fileList: [],
 	});
 
 	const handleCancel = () => setUploadState({ previewVisible: false });
+	const handleChange = ({ fileList }) => setUploadState(prev => (prev.fileList = fileList));
 
-	console.log(uploadState);
+	function getBase64(file) {
+		return new Promise((resolve, reject) => {
+			const reader = new FileReader();
+			reader.readAsDataURL(file);
+			reader.onload = () => resolve(reader.result);
+			reader.onerror = error => reject(error);
+		});
+	}
+
+	async function handlePreview(file) {
+		if (!file.url && !file.preview) {
+			file.preview = await getBase64(file.originFileObj);
+		}
+
+		setUploadState({
+			previewImage: file.url || file.preview,
+			previewVisible: true,
+			previewTitle: file.name || file.url.substring(file.url.lastIndexOf("/") + 1),
+		});
+	}
+
+	const uploadButton = (
+		<div>
+			<PlusOutlined />
+			<div style={{ marginTop: 8 }}>Upload</div>
+		</div>
+	);
+
+	const { previewVisible, previewImage, fileList, previewTitle } = uploadState;
+	console.log(fileList);
+
 	/*********************************************/
 
 	const [name, setName] = useState("");
@@ -55,8 +83,20 @@ export default function ReviewCourse({ match }) {
 	useEffect(() => {
 		setLoading(true);
 		getCoursePrivate(authenticated(), match.params, decodedJwt()._id);
+		setTimeout(() => {
+			course.images &&
+				setUploadState(
+					prev =>
+						(prev.fileList = course.images.map(image => ({
+							uid: image._i,
+							status: "done",
+							url: `/api/v1/courses/${course._id}/image/${image._id}`,
+						})))
+				);
+		}, 2000);
 		setLoading(false);
-	}, [getCoursePrivate, match.params]);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
 
 	useEffect(() => {
 		error && msg.error(error);
@@ -64,7 +104,8 @@ export default function ReviewCourse({ match }) {
 		return () => {
 			setToNull();
 		};
-	}, [error, message, setToNull]);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [error, message]);
 
 	const formItemLayout = {
 		labelCol: {
@@ -93,15 +134,6 @@ export default function ReviewCourse({ match }) {
 		kos[0] && setImages(kos[0]);
 		kos[1] && setImage2(kos[1]);
 	};
-
-	function getBase64(file) {
-		return new Promise((resolve, reject) => {
-			const reader = new FileReader();
-			reader.readAsDataURL(file);
-			reader.onload = () => resolve(reader.result);
-			reader.onerror = error => reject(error);
-		});
-	}
 
 	if (loading || _.isEmpty(course)) return <Spin />;
 	return (
@@ -149,34 +181,27 @@ export default function ReviewCourse({ match }) {
 				>
 					<Input.TextArea onChange={e => setDescription(e.target.value)} />
 				</Form.Item>
-				<Form.Item label="Images">
-					<Form.Item
-						name="images"
-						valuePropName="fileList"
-						getValueFromEvent={normFile}
-						noStyle
-						initialValue={course.images.forEach((image, i) => {
-							return `/api/v1/courses/${course._id}/image/${image._id}`;
-						})}
-					>
-						<Upload
-							listType="text"
-							maxCount={2}
-							multiple
-							fileList={course.images.forEach((image, i) => {
-								return {
-									id: i,
-									name: `image${i}`,
-									url: `/api/v1/courses/${course._id}/image/${image._id}`,
-								};
-							})}
-							beforeUpload={beforeUpload}
-							onRemove={onRemove}
-						>
-							<Button icon={<UploadOutlined />}>Upload (Max: 2)</Button>
-						</Upload>
-					</Form.Item>
-				</Form.Item>
+
+				<Upload
+					action={`/api/v1/courses/${course._id}`}
+					listType="picture-card"
+					fileList={fileList}
+					onPreview={handlePreview}
+					onChange={handleChange}
+					name="images"
+					method="PUT"
+				>
+					{fileList && fileList.length >= 2 ? null : uploadButton}
+				</Upload>
+				<Modal
+					visible={previewVisible}
+					title={previewTitle}
+					footer={null}
+					onCancel={handleCancel}
+				>
+					<img alt="example" style={{ width: "100%" }} src={previewImage} />
+				</Modal>
+
 				<Form.Item
 					name="category"
 					label="Category"
