@@ -1,5 +1,5 @@
 import React,{useState,useEffect,useContext,useRef} from 'react'
-import { Layout,Steps ,Row,Divider,Col,Form,Input,Button,message as msg,Modal,Result,Affix,Badge,Drawer} from "antd";
+import { Layout,Steps ,Divider,Col,Form,Input,Button,message as msg,Modal,Result,Affix,Badge,Drawer} from "antd";
 import { GlobalContext } from "./../../context/GlobalContext";
 import { LoadingOutlined , DashboardOutlined} from "@ant-design/icons";
 import { authenticated } from "./../../helpers/api-auth";
@@ -60,7 +60,7 @@ export default function Addlesson({match}) {
                 <Steps size="small" current={1}>
                     <Step title="Create course" />
                     <Step title="Add lessons" icon={<LoadingOutlined />} />
-                    <Step title={'Review '+'&'+' Publish!'} />
+                    <Step title={'Review & Publish!'} />
                 </Steps>
             </Col>
             
