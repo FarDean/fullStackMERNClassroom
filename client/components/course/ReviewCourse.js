@@ -31,35 +31,10 @@ function getImgUrl(course) {
 }
 
 export default function ReviewCourse({ match }) {
-	const { message, error, setToNull, getCoursePrivate, course } = useContext(GlobalContext);
+	const { message, error, setToNull, getCoursePrivate, course, editCourse } = useContext(
+		GlobalContext
+	);
 	const [loading, setLoading] = useState(true);
-
-	const [published, setPublished] = useState(course.published);
-	const [category, setCategory] = useState(course.category);
-	const [image1, setImage1] = useState(null);
-	const [image2, setImage2] = useState(null);
-
-	/*********** Upload stuff**************/
-	const props = {
-		onRemove: file => {
-			this.setState(state => {
-				const index = state.fileList.indexOf(file);
-				const newFileList = state.fileList.slice();
-				newFileList.splice(index, 1);
-				return {
-					fileList: newFileList,
-				};
-			});
-		},
-		beforeUpload: file => {
-			this.setState(state => ({
-				fileList: [...state.fileList, file],
-			}));
-			return false;
-		},
-		fileList,
-	};
-
 	useEffect(() => {
 		getCoursePrivate(authenticated(), match.params, decodedJwt()._id);
 		setLoading(false);
@@ -67,6 +42,45 @@ export default function ReviewCourse({ match }) {
 			setToNull();
 		};
 	}, []);
+
+	const [published, setPublished] = useState(course.published);
+	const [category, setCategory] = useState(course.category);
+
+	/*********** Upload stuff**************/
+	const [fileList, setFileList] = useState([]);
+
+	const handleUpload = () => {
+		const formData = new FormData();
+		if (_.isEmpty(fileList))
+			fileList.forEach(file => {
+				formData.append("files[]", file);
+			});
+		formData.append("category", category);
+		formData.append("published", published);
+
+		// for (var key of formData.entries()) {
+		// 	console.log(key[0] + ", " + key[1]);
+		// }
+
+		setLoading(true);
+		editCourse(authenticated(), match.params, formData);
+		setLoading(false);
+	};
+	const props = {
+		onRemove: file => {
+			setFileList(prev => {
+				const index = prev.indexOf(file);
+				const newFileList = prev.slice();
+				newFileList.splice(index, 1);
+				return newFileList;
+			});
+		},
+		beforeUpload: file => {
+			setFileList(prev => [...prev, file]);
+			return false;
+		},
+		fileList,
+	};
 
 	useEffect(() => {
 		error && msg.error(error);
@@ -77,15 +91,16 @@ export default function ReviewCourse({ match }) {
 	}, [error, message]);
 
 	/************************************/
+	console.log(category);
 	/************************************/
 
-	console.log(course);
+	console.log(published);
 	if (loading || _.isEmpty(course)) return <Spin />;
 	return (
 		<>
 			<Layout style={{ minHeight: "95vh" }}>
 				<Divider orientation="left" style={{ marginBottom: "95px" }}>
-					Add Lessons
+					Review {"&"} Publish
 				</Divider>
 				<Col style={{ width: "65%", margin: "0 auto 45px auto" }}>
 					<Steps size="small" current={3}>
@@ -97,17 +112,47 @@ export default function ReviewCourse({ match }) {
 				<div className="site-card-wrapper">
 					<Row gutter={16}>
 						<Col span={6}>
-							<Card title="Name" bordered={false}>
+							<Card
+								title="Name"
+								bordered={false}
+								style={{
+									minHeight: "312px",
+									marginBottom: "5px",
+									display: "flex",
+									justifyContent: "center",
+									alignItems: "center",
+								}}
+							>
 								{course.name}
 							</Card>
 						</Col>
 						<Col span={6}>
-							<Card title="Description" bordered={false}>
+							<Card
+								title="Description"
+								bordered={false}
+								style={{
+									minHeight: "312px",
+									marginBottom: "5px",
+									display: "flex",
+									justifyContent: "center",
+									alignItems: "center",
+								}}
+							>
 								{course.description}
 							</Card>
 						</Col>
 						<Col span={6}>
-							<Card title="Published" bordered={false}>
+							<Card
+								title="Published"
+								bordered={false}
+								style={{
+									minHeight: "312px",
+									marginBottom: "5px",
+									display: "flex",
+									justifyContent: "center",
+									alignItems: "center",
+								}}
+							>
 								<Switch
 									checkedChildren={<CheckOutlined />}
 									unCheckedChildren={<CloseOutlined />}
@@ -117,27 +162,66 @@ export default function ReviewCourse({ match }) {
 							</Card>
 						</Col>
 						<Col span={6}>
-							<Card title="Created at" bordered={false}>
+							<Card
+								title="Created at"
+								bordered={false}
+								style={{
+									minHeight: "312px",
+									marginBottom: "5px",
+									display: "flex",
+									justifyContent: "center",
+									alignItems: "center",
+								}}
+							>
 								{slise(course.createdAt)}
 							</Card>
 						</Col>
 						<Col span={6}>
-							<Card title="Images" bordered={false}>
-								<Image.PreviewGroup>
-									{getImgUrl(course).map((img, i) => (
-										<Image key={i} width={200} src={img} />
-									))}
-								</Image.PreviewGroup>
-								<Upload>
-									<Button icon={<UploadOutlined />}>Change Pictures</Button>
+							<Card
+								title="Images"
+								bordered={false}
+								style={{
+									minHeight: "312px",
+									marginBottom: "5px",
+									display: "flex",
+									justifyContent: "center",
+									alignItems: "center",
+								}}
+							>
+								{fileList.length === 0 && (
+									<Image.PreviewGroup>
+										{getImgUrl(course).map((img, i) => (
+											<Image key={i} width={200} src={img} />
+										))}
+									</Image.PreviewGroup>
+								)}
+
+								<Upload {...props}>
+									<Button
+										disabled={fileList.length === 2}
+										icon={<UploadOutlined />}
+										style={{ marginTop: "7px" }}
+									>
+										Change Pictures
+									</Button>
 								</Upload>
 							</Card>
 						</Col>
 						<Col span={6}>
-							<Card title="Category" bordered={false}>
+							<Card
+								title="Category"
+								bordered={false}
+								style={{
+									minHeight: "312px",
+									marginBottom: "5px",
+									display: "flex",
+									justifyContent: "center",
+									alignItems: "center",
+								}}
+							>
 								<Select
-									value={category}
-									style={{ width: 120 }}
+									defaultValue={course.category}
+									style={{ width: 140 }}
 									onChange={e => setCategory(e)}
 								>
 									<Option value="Design">Design</Option>
@@ -145,6 +229,36 @@ export default function ReviewCourse({ match }) {
 									<Option value="Development">Development</Option>
 									<Option value="Marketing">Marketing</Option>
 								</Select>
+							</Card>
+						</Col>
+						<Col span={6}>
+							<Card
+								title="Lessons"
+								bordered={false}
+								style={{
+									minHeight: "312px",
+									marginBottom: "5px",
+									display: "flex",
+									justifyContent: "center",
+									alignItems: "center",
+								}}
+							>
+								{course.lessons.length} Lessons
+							</Card>
+						</Col>
+						<Col span={6}>
+							<Card
+								title="Submit"
+								bordered={false}
+								style={{
+									minHeight: "312px",
+									marginBottom: "5px",
+									display: "flex",
+									justifyContent: "center",
+									alignItems: "center",
+								}}
+							>
+								<Button onClick={handleUpload}>Submit</Button>
 							</Card>
 						</Col>
 					</Row>
