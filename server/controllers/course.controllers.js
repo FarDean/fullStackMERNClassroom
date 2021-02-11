@@ -101,12 +101,14 @@ const update =async (req,res)=>{
                 course.lessons = JSON.parse(fields.lessons)
             }
             if(files){
+                const arr =[]
                 for(let i in files){
-                    course.images.push({
+                    arr.push({
                         data:fs.readFileSync(files[i].path),
                         contentType:files[i].type
                     })
                 }
+                course.images = arr
             }
 
             await course.save()
