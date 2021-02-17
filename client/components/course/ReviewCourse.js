@@ -1,22 +1,8 @@
 import React, { useState, useContext, useEffect } from "react";
 import { GlobalContext } from "./../../context/GlobalContext";
 import { authenticated, decodedJwt } from "./../../helpers/api-auth";
-import {
-	message as msg,
-	Layout,
-	Steps,
-	Divider,
-	Col,
-	Row,
-	Card,
-	Switch,
-	Spin,
-	Image,
-	Select,
-	Upload,
-	Button,
-} from "antd";
-import { LoadingOutlined, CloseOutlined, CheckOutlined, UploadOutlined } from "@ant-design/icons";
+import { message as msg, Spin } from "antd";
+
 import _ from "lodash";
 import RCmini from "./RCmini";
 
