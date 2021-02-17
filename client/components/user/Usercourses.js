@@ -24,12 +24,12 @@ export default function Usercourses({match}) {
                 dataSource={courseByUser}
                 renderItem={item => (
                     <List.Item>
-                    <span><ExclamationCircleOutlined style={{color:'orange',marginRight:'2px'}} /><Typography.Text style={{marginRight:'15px'}} type={item.published ? 'success':'warning'}>{item.published ? 'Published':'Draft'}</Typography.Text></span>
-                    <span><Link to={`/course/addlesson/${item._id}`} >{item.name}</Link></span>
+                    <span>{!item.published &&<ExclamationCircleOutlined style={{color:'orange',marginRight:'2px'}} />}<Typography.Text style={{marginRight:'15px'}} type={item.published ? 'success':'warning'}>{item.published ? 'Published':'Draft'}</Typography.Text></span>
+                    <span><Link to={'/course/review/' + item._id} >{item.name}</Link></span>
                     {!item.published &&
                     <>
                         <Tooltip placement='top' title='Add Lesson'><span><Link to={`/course/addlesson/${item._id}`}><Button><PlusSquareOutlined /></Button></Link></span></Tooltip>
-                        <Tooltip placement='top' title={'Review '+'&'+' Publish!'}><span><Link to={'/course/review/' + item._id}><Button><EditOutlined /></Button></Link></span></Tooltip>
+                        <Tooltip placement='top' title={'Review & Publish!'}><span><Link to={'/course/review/' + item._id}><Button><EditOutlined /></Button></Link></span></Tooltip>
                     </>
                     }
 

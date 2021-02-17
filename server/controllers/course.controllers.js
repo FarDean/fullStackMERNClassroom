@@ -94,14 +94,21 @@ const update =async (req,res)=>{
                     error: "Photo couldn't be uploaded!"
                 })
             }
+            console.log(fields);
             let course = req.course
             course = extend(course,fields)
             if(fields.lessons){
                 course.lessons = JSON.parse(fields.lessons)
             }
-            if(files.image){
-                course.image.data =fs.readFileSync(files.image.path)
-                course.image.contentType = files.image.type
+            if(files){
+                const arr =[]
+                for(let i in files){
+                    arr.push({
+                        data:fs.readFileSync(files[i].path),
+                        contentType:files[i].type
+                    })
+                }
+                course.images = arr
             }
 
             await course.save()
