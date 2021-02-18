@@ -1,6 +1,6 @@
 import React, { useEffect, useContext, useState } from "react";
 import { GlobalContext } from "./../../context/GlobalContext";
-import { Divider, Layout, List, Button, Modal, Col, Row, Typography } from "antd";
+import { Divider, Layout, List, Col, Typography } from "antd";
 import LPModal from "./LPModal";
 
 const { Text, Link, Title } = Typography;
@@ -19,6 +19,7 @@ export default function ListPublishedCourses() {
 		};
 	}, []);
 
+	console.log(publishedCourses);
 	return (
 		<Layout style={{ minHeight: "95vh" }}>
 			<Divider orientation="left" style={{ marginBottom: "95px" }}>
