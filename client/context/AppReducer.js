@@ -1,148 +1,146 @@
-export default (state,action)=>{
-    switch (action.type) {
-        case 'REGISTER_USER':
-            return {
-                ...state,
-                message:action.payload
-            }
+export default function AppReducer(state, action) {
+	switch (action.type) {
+		case "REGISTER_USER":
+			return {
+				...state,
+				message: action.payload,
+			};
 
-        case 'UPDATE_USER':
-            return {
-                ...state,
-                message:action.payload
-            }
+		case "UPDATE_USER":
+			return {
+				...state,
+				message: action.payload,
+			};
 
-                    
-        case 'READ_USER':
-            return {
-                ...state,
-                user:action.payload
-            }
+		case "READ_USER":
+			return {
+				...state,
+				user: action.payload,
+			};
 
-        case 'LIST_USERS':
-            return {
-                ...state,
-                users:action.payload,
-                error:null
-            }
+		case "LIST_USERS":
+			return {
+				...state,
+				users: action.payload,
+				error: null,
+			};
 
-        case 'SIGN_IN':
-            return {
-                ...state,
-                error:null
-            }
-        case 'ERROR':
-            return {
-                ...state,
-                error:action.payload
-            }
-        
-        case 'SET_TO_NULL':
-            return {
-                ...state,
-                error:action.payload,
-                message:action.payload
-            }
-        case 'SIGN_OUT':
-            return {
-                ...state,
-                message:action.payload
-            }
+		case "SIGN_IN":
+			return {
+				...state,
+				error: null,
+			};
+		case "ERROR":
+			return {
+				...state,
+				error: action.payload,
+			};
 
-        
-        case 'GET_PUBLISHED_COURSES':
-            return {
-                ...state,
-                publishedCourses: action.payload
-            }
+		case "SET_TO_NULL":
+			return {
+				...state,
+				error: action.payload,
+				message: action.payload,
+			};
+		case "SIGN_OUT":
+			return {
+				...state,
+				message: action.payload,
+			};
 
-        case 'ADD_LESSON':
-            return {
-                ...state,
-                course:action.payload.course,
-                message:action.payload.message
-            }
+		case "GET_PUBLISHED_COURSES":
+			return {
+				...state,
+				publishedCourses: action.payload,
+			};
 
-        case 'COURSE_BY_USER':
-            return {
-                ...state,
-                courseByUser:action.payload
-            }
+		case "ADD_LESSON":
+			return {
+				...state,
+				course: action.payload.course,
+				message: action.payload.message,
+			};
 
-        case 'GET_ALL_COURSES':
-            return {
-                ...state,
-                courses: action.payload
-            }
+		case "COURSE_BY_USER":
+			return {
+				...state,
+				courseByUser: action.payload,
+			};
 
-        case 'CREATE_COURSE':
-            return {
-                ...state,
-                message: action.payload.message,
-                course : action.payload.course
-            }
+		case "GET_ALL_COURSES":
+			return {
+				...state,
+				courses: action.payload,
+			};
 
-        case 'GET_COURSE':
-            return {
-                ...state,
-                course:action.payload
-            }
-        
-        case 'GET_COURSE_PRIVATE':
-            return {
-                ...state,
-                course:action.payload
-            }
+		case "CREATE_COURSE":
+			return {
+				...state,
+				message: action.payload.message,
+				course: action.payload.course,
+			};
 
-        case 'UPDATE_COURSE':
-            return {
-                ...state,
-                message:action.payload
-            }
+		case "GET_COURSE":
+			return {
+				...state,
+				course: action.payload,
+			};
 
-        case 'DELETE_COURSE':
-            return {
-                ...state,
-                message:action.payload
-            }
-        
-        case 'ENROLL':
-            return {
-                ...state,
-                message:action.payload
-            }
-        
-        case 'GET_ENROLLMENT':
-            return {
-                ...state,
-                enrollment:action.payload
-            }
+		case "GET_COURSE_PRIVATE":
+			return {
+				...state,
+				course: action.payload,
+			};
 
-        case 'GET_USER_ENROLLMENTS':
-            return {
-                ...state,
-                userEnrollments:action.payload
-            }
+		case "UPDATE_COURSE":
+			return {
+				...state,
+				message: action.payload,
+			};
 
-        case 'COMPLETE_LESSON':
-            return {
-                ...state,
-                message:action.payload
-            }
+		case "DELETE_COURSE":
+			return {
+				...state,
+				message: action.payload,
+			};
 
-        case 'STATS':
-            return {
-                ...state,
-                stats: action.payload
-            }
+		case "ENROLL":
+			return {
+				...state,
+				message: action.payload,
+			};
 
-        case 'GET_PERSONAL_INFO':
-            return {
-                ...state,
-                personalInfo: action.payload
-            }
+		case "GET_ENROLLMENT":
+			return {
+				...state,
+				enrollment: action.payload,
+			};
 
-        default:
-            return state
-    }
+		case "GET_USER_ENROLLMENTS":
+			return {
+				...state,
+				userEnrollments: action.payload,
+			};
+
+		case "COMPLETE_LESSON":
+			return {
+				...state,
+				message: action.payload,
+			};
+
+		case "STATS":
+			return {
+				...state,
+				stats: action.payload,
+			};
+
+		case "GET_PERSONAL_INFO":
+			return {
+				...state,
+				personalInfo: action.payload,
+			};
+
+		default:
+			return state;
+	}
 }
