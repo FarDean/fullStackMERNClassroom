@@ -3,6 +3,14 @@ import { GlobalContext } from "./../../context/GlobalContext";
 import { Divider, Layout, List, Col, Spin, message as msg } from "antd";
 import LPModal from "./LPModal";
 
+const layout = {
+	xs: { span: 24 },
+	sm: { span: 20, offset: 2 },
+	md: { span: 16, offset: 4 },
+	lg: { span: 14, offset: 5 },
+	xl: { span: 12, offset: 6 },
+};
+
 export default function ListPublishedCourses() {
 	const { error, message, getPublishedCourses, setToNull, publishedCourses } = useContext(
 		GlobalContext
@@ -29,7 +37,7 @@ export default function ListPublishedCourses() {
 			<Divider orientation="left" style={{ marginBottom: "95px" }}>
 				Published Courses
 			</Divider>
-			<Col span={16} offset={4}>
+			<Col {...layout}>
 				<List
 					size="large"
 					dataSource={publishedCourses}
