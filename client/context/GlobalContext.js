@@ -402,15 +402,15 @@ export const GlobalProvider = ({ children }) => {
 
 	/**************************        Enrollment          **********************/
 
-	async function enroll(jwt, params) {
+	async function enroll(jwt, courseId) {
 		const config = {
 			headers: {
-				Authoriztion: "Bearer " + jwt,
+				Authorization: "Bearer " + jwt,
 			},
 		};
 
 		try {
-			const res = await axios.get("/api/v1/enrollment/new/" + params.courseId, config);
+			const res = await axios.get("/api/v1/enrollment/new/" + courseId, config);
 
 			dispatch({
 				type: "ENROLL",

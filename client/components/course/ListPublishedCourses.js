@@ -1,25 +1,22 @@
 import React, { useEffect, useContext, useState } from "react";
 import { GlobalContext } from "./../../context/GlobalContext";
-import { Divider, Layout, List, Col, Typography } from "antd";
+import { Divider, Layout, List, Col, Spin } from "antd";
 import LPModal from "./LPModal";
 
-const { Text, Link, Title } = Typography;
-
 export default function ListPublishedCourses() {
-	const { message, error, getPublishedCourses, setToNull, publishedCourses } = useContext(
-		GlobalContext
-	);
+	const { getPublishedCourses, setToNull, publishedCourses } = useContext(GlobalContext);
 	const [loading, setLoading] = useState(false);
 
 	useEffect(() => {
 		setLoading(true);
 		getPublishedCourses();
+		setLoading(false);
 		return () => {
 			setToNull();
 		};
 	}, []);
 
-	console.log(publishedCourses);
+	if (loading) return <Spin />;
 	return (
 		<Layout style={{ minHeight: "95vh" }}>
 			<Divider orientation="left" style={{ marginBottom: "95px" }}>
