@@ -1,25 +1,33 @@
-import mongoose from 'mongoose'
+import mongoose from "mongoose";
 
-const EnrollSchema = new mongoose.Schema({
-    course:{
-        type:mongoose.Schema.Types.ObjectId,
-        ref:'Course'
-    },
-    student:{
-        type:mongoose.Schema.Types.ObjectId,
-        ref:'User'
-    },
-    lessonStatus:[{
-        lesson:{
-            type:mongoose.Schema.Types.ObjectId,
-            ref:'Lesson'
-        },
-        complete: Boolean
-    }],
-    completed:Boolean
-},{
-    timestamps:true
-})
+const EnrollSchema = new mongoose.Schema(
+	{
+		course: {
+			type: mongoose.Schema.Types.ObjectId,
+			ref: "Course",
+		},
+		student: {
+			type: mongoose.Schema.Types.ObjectId,
+			ref: "User",
+		},
+		lessonStatus: [
+			{
+				lesson: {
+					type: mongoose.Schema.Types.ObjectId,
+					ref: "Lesson",
+				},
+				complete: Boolean,
+			},
+		],
+		completed: {
+			type: Boolean,
+			default: false,
+		},
+	},
+	{
+		timestamps: true,
+	}
+);
 
-const Enrollment = mongoose.model('Enrollment',EnrollSchema)
+const Enrollment = mongoose.model("Enrollment", EnrollSchema);
 export default Enrollment;

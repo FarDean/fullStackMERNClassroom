@@ -427,7 +427,7 @@ export const GlobalProvider = ({ children }) => {
 	async function getEnrollment(jwt, params) {
 		const config = {
 			headers: {
-				Authoriztion: "Bearer " + jwt,
+				Authorization: "Bearer " + jwt,
 			},
 		};
 
@@ -449,7 +449,7 @@ export const GlobalProvider = ({ children }) => {
 	async function getAllEnrollments(jwt) {
 		const config = {
 			headers: {
-				Authoriztion: "Bearer " + jwt,
+				Authorization: "Bearer " + jwt,
 			},
 		};
 
@@ -471,7 +471,7 @@ export const GlobalProvider = ({ children }) => {
 	async function completeLesson(jwt, params, updatedEnrollment) {
 		const config = {
 			headers: {
-				Authoriztion: "Bearer " + jwt,
+				Authorization: "Bearer " + jwt,
 			},
 		};
 
@@ -494,9 +494,9 @@ export const GlobalProvider = ({ children }) => {
 		}
 	}
 
-	async function getStats(params) {
+	async function getStats(courseId) {
 		try {
-			const res = await axios.get("/api/v1/stats/" + params.courseId);
+			const res = await axios.get("/api/v1/stats/" + courseId);
 
 			dispatch({
 				type: "STATS",

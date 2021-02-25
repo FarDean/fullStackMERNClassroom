@@ -130,6 +130,9 @@ export default function Navbar() {
 					<Menu.Item key="users">
 						<Link to="/users">Users</Link>
 					</Menu.Item>
+					<Menu.Item key="courses">
+						<Link to="/courses">Courses</Link>
+					</Menu.Item>
 				</Menu>
 			</Drawer>
 		</Layout>

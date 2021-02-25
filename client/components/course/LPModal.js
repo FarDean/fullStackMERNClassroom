@@ -1,6 +1,6 @@
 import React, { useState, useContext, useEffect } from "react";
 import { GlobalContext } from "./../../context/GlobalContext";
-import { List, Button, Modal, Typography, Image, message as msg, Spin } from "antd";
+import { List, Button, Modal, Typography, Image, Spin } from "antd";
 import { Link } from "react-router-dom";
 import { authenticated } from "./../../helpers/api-auth";
 import { Redirect } from "react-router-dom";
@@ -16,10 +16,16 @@ const contentStyle = {
 };
 
 export default function LPModal({ item }) {
-	const { enroll, error, message, setToNull } = useContext(GlobalContext);
+	const { enroll, getStats, stats } = useContext(GlobalContext);
 	const [visible, setVisible] = useState(false);
 	const [redirect, setRedirect] = useState(false);
 	const [loading, setLoading] = useState(false);
+
+	useEffect(() => {
+		setLoading(true);
+		getStats(item._id);
+		setLoading(false);
+	}, []);
 
 	const showModal = () => {
 		setVisible(true);
@@ -35,6 +41,8 @@ export default function LPModal({ item }) {
 	const handleCancel = () => {
 		setVisible(false);
 	};
+
+	console.log(stats);
 
 	function getImgUrl(imgArr) {
 		return imgArr.map(img => (
@@ -84,6 +92,13 @@ export default function LPModal({ item }) {
 							)}
 						</section>
 						<section>Created: {item.createdAt.slice(0, 10)}</section>
+						<section>
+							Enrolled Students: <Text type="danger">{stats.totalEnrolled}</Text>
+						</section>
+						<section>
+							Students completed this course:{" "}
+							<Text type="success">{stats.totalCompleted}</Text>
+						</section>
 					</>
 				)}
 			</Modal>
