@@ -1,20 +1,27 @@
 import React, { useEffect, useContext, useState } from "react";
 import { GlobalContext } from "./../../context/GlobalContext";
-import { Divider, Layout, List, Col, Spin } from "antd";
+import { Divider, Layout, List, Col, Spin, message as msg } from "antd";
 import LPModal from "./LPModal";
 
 export default function ListPublishedCourses() {
-	const { getPublishedCourses, setToNull, publishedCourses } = useContext(GlobalContext);
+	const { error, message, getPublishedCourses, setToNull, publishedCourses } = useContext(
+		GlobalContext
+	);
 	const [loading, setLoading] = useState(false);
 
 	useEffect(() => {
 		setLoading(true);
 		getPublishedCourses();
 		setLoading(false);
+	}, []);
+
+	useEffect(() => {
+		error && msg.error(error);
+		message && msg.success(message);
 		return () => {
 			setToNull();
 		};
-	}, []);
+	}, [error, message]);
 
 	if (loading) return <Spin />;
 	return (

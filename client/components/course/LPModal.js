@@ -36,14 +36,6 @@ export default function LPModal({ item }) {
 		setVisible(false);
 	};
 
-	useEffect(() => {
-		error && msg.error(error);
-		message && msg.success(message);
-		return () => {
-			setToNull();
-		};
-	}, [error, message]);
-
 	function getImgUrl(imgArr) {
 		return imgArr.map(img => (
 			<Image
