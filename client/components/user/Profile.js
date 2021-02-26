@@ -11,7 +11,9 @@ import {
 	Tabs,
 	Spin,
 	Badge,
-	Modal,
+	Image,
+	Drawer,
+	Typography,
 } from "antd";
 import { GlobalContext } from "./../../context/GlobalContext";
 import { authenticated } from "./../../helpers/api-auth";
@@ -20,10 +22,12 @@ import jwt_decode from "jwt-decode";
 import { Link } from "react-router-dom";
 import Usercourses from "./Usercourses";
 import _ from "lodash";
+import slugify from "slugify";
 
 const { Meta } = Card;
 const { Content } = Layout;
 const { TabPane } = Tabs;
+const { Text } = Typography;
 
 const layout = {
 	xs: { span: 24 },
@@ -42,10 +46,6 @@ export default function Profile({ match }) {
 
 	const showModal = () => {
 		setVisible(true);
-	};
-
-	const handleOk = () => {
-		setVisible(false);
 	};
 
 	const handleCancel = () => {
@@ -89,6 +89,17 @@ export default function Profile({ match }) {
 	);
 
 	console.log(userEnrollments);
+
+	function getImgUrl(courseId, imgId) {
+		return (
+			<Image
+				width={100}
+				height={100}
+				src={`/api/v1/courses/${courseId}/image/${imgId}`}
+				key={imgId}
+			/>
+		);
+	}
 	if (_.isEmpty(user) || loading) return <Spin />;
 	return (
 		<Layout>
@@ -129,16 +140,72 @@ export default function Profile({ match }) {
 						</Tabs>
 					</Col>
 				</Row>
-				<Modal
+				<Drawer
 					title="Enrolled Courses"
+					placement="top"
+					closable={true}
+					onClose={handleCancel}
 					visible={visible}
-					onOk={handleOk}
-					onCancel={handleCancel}
+					height={600}
 				>
 					{userEnrollments.map(enrollment => (
-						<p>{enrollment.course.name}</p>
+						<Link
+							to={`/enrollments/${
+								enrollment._id + "-" + slugify(enrollment.course.name)
+							}`}
+						>
+							<Row gutter={[8, 32]}>
+								<Col
+									span={6}
+									style={{
+										display: "flex",
+										alignItems: "center",
+										justifyContent: "center",
+									}}
+								>
+									<p>{enrollment.course.name}</p>
+								</Col>
+								<Col
+									span={6}
+									style={{
+										display: "flex",
+										alignItems: "center",
+										justifyContent: "center",
+									}}
+								>
+									<Image.PreviewGroup>
+										{enrollment.course.images.map(img =>
+											getImgUrl(enrollment.course._id, img._id)
+										)}
+									</Image.PreviewGroup>
+								</Col>
+								<Col
+									span={6}
+									style={{
+										display: "flex",
+										alignItems: "center",
+										justifyContent: "center",
+									}}
+								>
+									<Text type="success">
+										[{enrollment.lessonStatus.filter(x => x.complete).length}]
+										out of {enrollment.lessonStatus.length} lessons compeleted
+									</Text>
+								</Col>
+								<Col
+									span={6}
+									style={{
+										display: "flex",
+										alignItems: "center",
+										justifyContent: "center",
+									}}
+								>
+									{enrollment.createdAt.slice(0, 10)}
+								</Col>
+							</Row>
+						</Link>
 					))}
-				</Modal>
+				</Drawer>
 			</Content>
 		</Layout>
 	);

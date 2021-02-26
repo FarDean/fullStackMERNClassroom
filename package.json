@@ -65,6 +65,7 @@
     "react-dom": "^17.0.1",
     "react-responsive": "^8.2.0",
     "react-router-dom": "^5.2.0",
+    "slugify": "^1.4.7",
     "util": "^0.12.3"
   }
 }
