@@ -14,6 +14,7 @@ import Createcourse from "./components/course/Createcourse";
 import Addlesson from "./components/course/Addlesson";
 import ReviewCourse from "./components/course/ReviewCourse";
 import ListPublishedCourses from "./components/course/ListPublishedCourses";
+import ViewEnrollment from "./components/enrollment/ViewEnrollment";
 
 export default function MainRouter() {
 	return (
@@ -31,6 +32,7 @@ export default function MainRouter() {
 				<PrivateRoute exact path="/course/addlesson/:courseId" component={Addlesson} />
 				<PrivateRoute exact path="/course/review/:courseId" component={ReviewCourse} />
 				<Route exact path="/courses" component={ListPublishedCourses} />
+				<PrivateRoute exact path="/enrollments/:idSlug" component={ViewEnrollment} />
 			</Switch>
 		</>
 	);
