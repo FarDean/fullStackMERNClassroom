@@ -123,7 +123,7 @@ export const GlobalProvider = ({ children }) => {
 		};
 
 		try {
-			const res = await axios.delete("/api/v1/users/" + params.userId, config);
+			await axios.delete("/api/v1/users/" + params.userId, config);
 		} catch (err) {
 			dispatch({
 				type: "ERROR",

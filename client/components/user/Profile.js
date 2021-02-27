@@ -88,8 +88,6 @@ export default function Profile({ match }) {
 		</Badge>
 	);
 
-	console.log(userEnrollments);
-
 	function getImgUrl(courseId, imgId) {
 		return (
 			<Image
@@ -153,6 +151,7 @@ export default function Profile({ match }) {
 							to={`/enrollments/${
 								enrollment._id + "-" + slugify(enrollment.course.name)
 							}`}
+							key={enrollment._id}
 						>
 							<Row gutter={[8, 32]}>
 								<Col
