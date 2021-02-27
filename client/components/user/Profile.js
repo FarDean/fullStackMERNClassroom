@@ -148,9 +148,9 @@ export default function Profile({ match }) {
 				>
 					{userEnrollments.map(enrollment => (
 						<Link
-							to={`/enrollments/${
-								enrollment._id + "-" + slugify(enrollment.course.name)
-							}`}
+							to={`/enrollments/${enrollment._id}/${slugify(
+								enrollment.course.name
+							)}/0`}
 							key={enrollment._id}
 						>
 							<Row gutter={[8, 32]}>

@@ -32,7 +32,13 @@ export default function MainRouter() {
 				<PrivateRoute exact path="/course/addlesson/:courseId" component={Addlesson} />
 				<PrivateRoute exact path="/course/review/:courseId" component={ReviewCourse} />
 				<Route exact path="/courses" component={ListPublishedCourses} />
-				<PrivateRoute exact path="/enrollments/:idSlug" component={ViewEnrollment} />
+				<PrivateRoute path="/enrollments/:enrollmentId/:slug" component={ViewEnrollment} />
+				{/* <Switch>
+					<PrivateRoute
+						path="/enrollments/:enrollmentId/:slug/:lessonId"
+						component={Lesson}
+					/>
+				</Switch> */}
 			</Switch>
 		</>
 	);
