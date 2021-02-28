@@ -1,8 +1,9 @@
 import React from "react";
 import { Layout, Menu } from "antd";
 import { UserOutlined, LaptopOutlined, NotificationOutlined } from "@ant-design/icons";
+import EnrollmentContent from "./EnrollmentContent";
 
-const { Sider, Content } = Layout;
+const { Sider } = Layout;
 const { SubMenu } = Menu;
 
 function ViewEnrollment() {
@@ -36,9 +37,7 @@ function ViewEnrollment() {
 					</SubMenu>
 				</Menu>
 			</Sider>
-			<Layout>
-				<Content>Content</Content>
-			</Layout>
+			<EnrollmentContent />
 		</Layout>
 	);
 }
