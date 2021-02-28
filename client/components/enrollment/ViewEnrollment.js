@@ -6,8 +6,8 @@ import { GlobalContext } from "./../../context/GlobalContext";
 import { authenticated } from "./../../helpers/api-auth";
 import { isEmpty } from "lodash";
 import slugify from "slugify";
-import Lesson from "./Lesson";
-import PrivateRoute from "./../../helpers/PrivateRoute";
+
+import EnrollmentContent from "./EnrollmentContent";
 
 const { Sider } = Layout;
 const { SubMenu } = Menu;
@@ -53,13 +53,7 @@ function ViewEnrollment({ match }) {
 					</SubMenu>
 				</Menu>
 			</Sider>
-
-			<Switch>
-				<PrivateRoute
-					path="/enrollments/:enrollmentId/:slug/:lessonId"
-					component={Lesson}
-				/>
-			</Switch>
+			<EnrollmentContent />
 		</Layout>
 	);
 }
