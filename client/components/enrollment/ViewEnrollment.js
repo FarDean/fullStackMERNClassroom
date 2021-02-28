@@ -15,26 +15,19 @@ const { SubMenu } = Menu;
 function ViewEnrollment({ match }) {
 	const { getEnrollment, enrollment } = useContext(GlobalContext);
 	const [loading, setLoading] = useState(false);
-	const [selectedKey, setSelectedKey] = useState(null);
 
 	useEffect(() => {
 		setLoading(true);
 		getEnrollment(authenticated(), match.params);
-		setSelectedKey(match.params.lessonId);
 		setLoading(false);
 	}, [match.params]);
 
 	if (loading || isEmpty(enrollment)) return <Spin />;
 	return (
-		<Layout style={{ minHeight: "95vh" }}>
+		<Layout>
 			<Sider style={{ backgroundColor: "inherit" }}>
 				{" "}
-				<Menu
-					mode="inline"
-					defaultSelectedKeys={[selectedKey]}
-					defaultOpenKeys={["sub2"]}
-					style={{ height: "100%" }}
-				>
+				<Menu mode="inline" style={{ height: "100%" }}>
 					<Menu.Item icon={<NotificationOutlined />}>
 						{enrollment.lessonStatus.filter(x => x.complete).length} lessons completed
 					</Menu.Item>
@@ -53,13 +46,6 @@ function ViewEnrollment({ match }) {
 					</SubMenu>
 				</Menu>
 			</Sider>
-
-			<Switch>
-				<PrivateRoute
-					path="/enrollments/:enrollmentId/:slug/:lessonId"
-					component={Lesson}
-				/>
-			</Switch>
 		</Layout>
 	);
 }

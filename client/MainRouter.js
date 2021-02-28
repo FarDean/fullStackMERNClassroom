@@ -15,6 +15,8 @@ import Addlesson from "./components/course/Addlesson";
 import ReviewCourse from "./components/course/ReviewCourse";
 import ListPublishedCourses from "./components/course/ListPublishedCourses";
 import ViewEnrollment from "./components/enrollment/ViewEnrollment";
+import Vmini from "./components/enrollment/Vmini";
+import Lesson from "./components/enrollment/Lesson";
 
 export default function MainRouter() {
 	return (
@@ -33,12 +35,11 @@ export default function MainRouter() {
 				<PrivateRoute exact path="/course/review/:courseId" component={ReviewCourse} />
 				<Route exact path="/courses" component={ListPublishedCourses} />
 				<PrivateRoute path="/enrollments/:enrollmentId/:slug" component={ViewEnrollment} />
-				{/* <Switch>
-					<PrivateRoute
-						path="/enrollments/:enrollmentId/:slug/:lessonId"
-						component={Lesson}
-					/>
-				</Switch> */}
+				<PrivateRoute
+					exact
+					path="/enrollments/:enrollmentId/:slug/:lessonId"
+					component={Lesson}
+				/>
 			</Switch>
 		</>
 	);
