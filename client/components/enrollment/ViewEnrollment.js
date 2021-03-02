@@ -1,45 +1,59 @@
-import React from "react";
-import { Layout, Menu } from "antd";
-import { UserOutlined, LaptopOutlined, NotificationOutlined } from "@ant-design/icons";
+import React, { useContext, useEffect, useState } from "react";
+import { Layout, Menu, Spin } from "antd";
+import { LaptopOutlined, NotificationOutlined } from "@ant-design/icons";
+import { Switch, Link } from "react-router-dom";
+import { GlobalContext } from "./../../context/GlobalContext";
+import { authenticated } from "./../../helpers/api-auth";
+import { isEmpty } from "lodash";
+import slugify from "slugify";
+
 import EnrollmentContent from "./EnrollmentContent";
+import Lesson from "./Lesson";
 
 const { Sider } = Layout;
 const { SubMenu } = Menu;
 
-function ViewEnrollment() {
+function ViewEnrollment({ match }) {
+	const { getEnrollment, enrollment } = useContext(GlobalContext);
+	const [loading, setLoading] = useState(false);
+
+	const [lesson, setLesson] = useState(JSON.parse(localStorage.getItem("lesson")));
+
+	useEffect(() => {
+		setLoading(true);
+		getEnrollment(authenticated(), match.params);
+		setLoading(false);
+	}, [match.params]);
+
+	console.log(enrollment);
+	console.log(lesson);
+
+	if (loading || isEmpty(enrollment)) return <Spin />;
 	return (
 		<Layout style={{ minHeight: "95vh" }}>
 			<Sider style={{ backgroundColor: "inherit" }}>
 				{" "}
-				<Menu
-					mode="inline"
-					defaultSelectedKeys={["1"]}
-					defaultOpenKeys={["sub1"]}
-					style={{ height: "100%" }}
-				>
-					<SubMenu key="sub1" icon={<UserOutlined />} title="subnav 1">
-						<Menu.Item key="1">option1</Menu.Item>
-						<Menu.Item key="2">option2</Menu.Item>
-						<Menu.Item key="3">option3</Menu.Item>
-						<Menu.Item key="4">option4</Menu.Item>
-					</SubMenu>
-					<SubMenu key="sub2" icon={<LaptopOutlined />} title="subnav 2">
-						<Menu.Item key="5">option5</Menu.Item>
-						<Menu.Item key="6">option6</Menu.Item>
-						<Menu.Item key="7">option7</Menu.Item>
-						<Menu.Item key="8">option8</Menu.Item>
-					</SubMenu>
-					<SubMenu key="sub3" icon={<NotificationOutlined />} title="subnav 3">
-						<Menu.Item key="9">option9</Menu.Item>
-						<Menu.Item key="10">option10</Menu.Item>
-						<Menu.Item key="11">option11</Menu.Item>
-						<Menu.Item key="12">option12</Menu.Item>
+				<Menu mode="inline" style={{ height: "100%" }}>
+					<Menu.Item icon={<NotificationOutlined />}>
+						{enrollment.lessonStatus.filter(x => x.complete).length} lessons completed
+					</Menu.Item>
+					<SubMenu key="sub2" icon={<LaptopOutlined />} title="Lessons">
+						{enrollment.course.lessons.map((lesson, i) => (
+							<Menu.Item onClick={() => setLesson(i)} key={i}>
+								{lesson.title}
+							</Menu.Item>
+						))}
 					</SubMenu>
 				</Menu>
 			</Sider>
-			<EnrollmentContent />
+
+			{lesson !== null ? (
+				<Lesson lessonIndex={lesson} enrollment={enrollment} setLesson={setLesson} />
+			) : (
+				<EnrollmentContent enrollment={enrollment} setLesson={setLesson} />
+			)}
 		</Layout>
 	);
 }
 
-export default ViewEnrollment;
+export default React.memo(ViewEnrollment);
