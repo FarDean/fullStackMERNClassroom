@@ -8,6 +8,7 @@ import { isEmpty } from "lodash";
 import slugify from "slugify";
 
 import EnrollmentContent from "./EnrollmentContent";
+import Lesson from "./Lesson";
 
 const { Sider } = Layout;
 const { SubMenu } = Menu;
@@ -15,45 +16,41 @@ const { SubMenu } = Menu;
 function ViewEnrollment({ match }) {
 	const { getEnrollment, enrollment } = useContext(GlobalContext);
 	const [loading, setLoading] = useState(false);
-	const [selectedKey, setSelectedKey] = useState(null);
+
+	const [lesson, setLesson] = useState(JSON.parse(localStorage.getItem("lesson")));
 
 	useEffect(() => {
 		setLoading(true);
 		getEnrollment(authenticated(), match.params);
-		setSelectedKey(match.params.lessonId);
 		setLoading(false);
 	}, [match.params]);
+
+	console.log(enrollment);
+	console.log(lesson);
 
 	if (loading || isEmpty(enrollment)) return <Spin />;
 	return (
 		<Layout style={{ minHeight: "95vh" }}>
 			<Sider style={{ backgroundColor: "inherit" }}>
 				{" "}
-				<Menu
-					mode="inline"
-					defaultSelectedKeys={[selectedKey]}
-					defaultOpenKeys={["sub2"]}
-					style={{ height: "100%" }}
-				>
+				<Menu mode="inline" style={{ height: "100%" }}>
 					<Menu.Item icon={<NotificationOutlined />}>
 						{enrollment.lessonStatus.filter(x => x.complete).length} lessons completed
 					</Menu.Item>
 					<SubMenu key="sub2" icon={<LaptopOutlined />} title="Lessons">
 						{enrollment.course.lessons.map((lesson, i) => (
-							<Menu.Item key={i}>
-								<Link
-									to={`/enrollments/${enrollment._id}/${slugify(
-										enrollment.course.name
-									)}/${i}`}
-								>
-									{lesson.title}
-								</Link>
+							<Menu.Item onClick={() => setLesson(i)} key={i}>
+								{lesson.title}
 							</Menu.Item>
 						))}
 					</SubMenu>
 				</Menu>
 			</Sider>
-			<EnrollmentContent />
+			{lesson !== null ? (
+				<Lesson lessonIndex={lesson} enrollment={enrollment} setLesson={setLesson} />
+			) : (
+				<EnrollmentContent enrollment={enrollment} setLesson={setLesson} />
+			)}
 		</Layout>
 	);
 }
