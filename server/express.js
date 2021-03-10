@@ -45,7 +45,7 @@ app.use("/", userRouter);
 app.use("/", authRouter);
 app.use("/", courseRouter);
 app.use("/", enrollmentRouter);
-// Now in turn we ask express to add a handler for any unmatched URL — this includes our non-existing index.html file
+// Now in turn we ask express to add a handler for any unmatched URL also '/' index route
 app.get("/*", (req, res) => {
 	const context = {};
 	const markup = renderToString(
