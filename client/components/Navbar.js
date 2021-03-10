@@ -4,11 +4,11 @@ import { Layout } from "antd";
 import { Typography } from "antd";
 import { Row, Col } from "antd";
 import { Menu } from "antd";
-import { Drawer } from "antd";
+import { Drawer, Avatar } from "antd";
 import { MenuUnfoldOutlined, MenuFoldOutlined } from "@ant-design/icons";
 import { authenticated } from "./../helpers/api-auth";
 import jwt_decode from "jwt-decode";
-
+import useAuth from "./../context/useAuth";
 import MediaQuery from "react-responsive";
 
 const { Header } = Layout;
@@ -21,6 +21,8 @@ export default function Navbar() {
 
 	const [visible, setVisible] = useState(false);
 
+	const user = useAuth();
+
 	const showDrawer = () => {
 		setVisible(true);
 	};
@@ -32,6 +34,7 @@ export default function Navbar() {
 	function handleClick(e) {
 		setCurrent(e.key);
 	}
+	console.log(user);
 
 	return (
 		<Layout>
@@ -76,6 +79,11 @@ export default function Navbar() {
 								<Menu.Item key="courses">
 									<Link to="/courses">Courses</Link>
 								</Menu.Item>
+								{user && (
+									<Menu.Item key="avatar">
+										<Avatar src={`/api/v1/users/${user._id}/image`} />
+									</Menu.Item>
+								)}
 							</Menu>
 						</Col>
 					</MediaQuery>
