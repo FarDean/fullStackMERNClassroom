@@ -34,7 +34,6 @@ export default function Navbar() {
 	function handleClick(e) {
 		setCurrent(e.key);
 	}
-	console.log(user);
 
 	return (
 		<Layout>
@@ -65,13 +64,6 @@ export default function Navbar() {
 										<Link to="/signup">Sign Up</Link>
 									</Menu.Item>
 								)}
-								{authenticated() && (
-									<Menu.Item key="profile">
-										<Link to={`/profile/${jwt_decode(authenticated())._id}`}>
-											Profile
-										</Link>
-									</Menu.Item>
-								)}
 
 								<Menu.Item key="users">
 									<Link to="/users">Users</Link>
@@ -81,7 +73,11 @@ export default function Navbar() {
 								</Menu.Item>
 								{user && (
 									<Menu.Item key="avatar">
-										<Avatar src={`/api/v1/users/${user._id}/image`} />
+										<Link to={`/profile/${jwt_decode(authenticated())._id}`}>
+											<Avatar src={`/api/v1/users/${user._id}/image`} />
+											{"  "}
+											{user.first_name}
+										</Link>
 									</Menu.Item>
 								)}
 							</Menu>
