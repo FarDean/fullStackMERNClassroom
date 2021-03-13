@@ -21,7 +21,7 @@ export default function Navbar() {
 
 	const [visible, setVisible] = useState(false);
 
-	const user = useAuth();
+	const { user } = useAuth();
 
 	const showDrawer = () => {
 		setVisible(true);
@@ -34,6 +34,8 @@ export default function Navbar() {
 	function handleClick(e) {
 		setCurrent(e.key);
 	}
+
+	console.log("user is :", user);
 
 	return (
 		<Layout>
