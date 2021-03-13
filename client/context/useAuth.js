@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { authenticated, decodedJwt } from "./../helpers/api-auth";
 import axios from "axios";
 export default function useAuth() {
-	const token = authenticated();
+	const token = authenticated(); // extracted a complicated expression
 	const [user, setUser] = useState(null);
 	const [loading, setLoading] = useState(false);
 	useEffect(() => {
