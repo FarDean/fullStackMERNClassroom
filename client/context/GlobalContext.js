@@ -173,12 +173,7 @@ export const GlobalProvider = ({ children }) => {
 
 	async function signOut() {
 		try {
-			const res = await axios.get("/auth/signout");
-
-			dispatch({
-				type: "SIGN_OUT",
-				payload: res.data.message,
-			});
+			return await axios.get("/auth/signout");
 		} catch (err) {
 			dispatch({
 				type: "ERROR",

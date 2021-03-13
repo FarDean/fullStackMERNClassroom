@@ -1,15 +1,16 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useState, useContext } from "react";
+import { Link, useHistory } from "react-router-dom";
 import { Layout } from "antd";
 import { Typography } from "antd";
 import { Row, Col } from "antd";
 import { Menu } from "antd";
-import { Drawer, Avatar } from "antd";
+import { Drawer, Avatar, Button, Dropdown } from "antd";
 import { MenuUnfoldOutlined, MenuFoldOutlined } from "@ant-design/icons";
 import { authenticated } from "./../helpers/api-auth";
 import jwt_decode from "jwt-decode";
 import useAuth from "./../context/useAuth";
 import MediaQuery from "react-responsive";
+import { GlobalContext } from "./../context/GlobalContext";
 
 const { Header } = Layout;
 const { Title } = Typography;
@@ -18,6 +19,8 @@ const { SubMenu } = Menu;
 export default function Navbar() {
 	const [burgerOpen, setBurgerOpen] = useState(false);
 	const [current, setCurrent] = useState("home");
+	const { signOut } = useContext(GlobalContext);
+	const history = useHistory();
 
 	const [visible, setVisible] = useState(false);
 
@@ -35,7 +38,17 @@ export default function Navbar() {
 		setCurrent(e.key);
 	}
 
-	console.log("user is :", user);
+	function logout() {
+		signOut().then(() => history.push("/"));
+	}
+	const dropDownMenu = user ? (
+		<Menu>
+			<Menu.Item>
+				<Link to={`/profile/${jwt_decode(authenticated())._id}`}>Profile</Link>
+			</Menu.Item>
+			<Menu.Item onClick={logout}>Log Out</Menu.Item>
+		</Menu>
+	) : null;
 
 	return (
 		<Layout>
@@ -75,11 +88,15 @@ export default function Navbar() {
 								</Menu.Item>
 								{user && (
 									<Menu.Item key="avatar">
-										<Link to={`/profile/${jwt_decode(authenticated())._id}`}>
-											<Avatar src={`/api/v1/users/${user._id}/image`} />
-											{"  "}
-											{user.first_name}
-										</Link>
+										<Dropdown overlay={dropDownMenu}>
+											<Link
+												to={`/profile/${jwt_decode(authenticated())._id}`}
+											>
+												<Avatar src={`/api/v1/users/${user._id}/image`} />
+												{"  "}
+												{user.first_name}
+											</Link>
+										</Dropdown>
 									</Menu.Item>
 								)}
 							</Menu>
