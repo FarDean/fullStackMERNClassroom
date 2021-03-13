@@ -42,7 +42,7 @@ export default function Navbar() {
 			<Header style={{ backgroundColor: "wheat" }}>
 				<Row justify="space-between" align="middle">
 					<Col>
-						<Title level={3}>Hi mother fucker</Title>
+						<Title level={3}>Classroommm...</Title>
 					</Col>
 
 					<MediaQuery minWidth={800}>
