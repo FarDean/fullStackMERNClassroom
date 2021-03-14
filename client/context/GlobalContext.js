@@ -463,7 +463,7 @@ export const GlobalProvider = ({ children }) => {
 		}
 	}
 
-	async function completeLesson(jwt, params, updatedEnrollment) {
+	async function completeLesson(jwt, enrollmentId, updatedEnrollment) {
 		const config = {
 			headers: {
 				Authorization: "Bearer " + jwt,
@@ -472,7 +472,7 @@ export const GlobalProvider = ({ children }) => {
 
 		try {
 			const res = await axios.put(
-				"/api/v1/enrollment/complete/" + params.enrollmentId,
+				"/api/v1/enrollment/complete/" + enrollmentId,
 				updatedEnrollment,
 				config
 			);

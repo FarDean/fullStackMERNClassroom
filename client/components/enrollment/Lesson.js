@@ -1,27 +1,47 @@
-import React, { useState } from "react";
-import { Layout, Row, Typography, Divider, Button } from "antd";
+import React, { useState, useContext, useEffect } from "react";
+import { Layout, Row, Typography, Divider, Button, message as msg } from "antd";
+import { GlobalContext } from "./../../context/GlobalContext";
+import { authenticated } from "./../../helpers/api-auth";
 
 const { Content } = Layout;
 const { Link, Title, Paragraph } = Typography;
 
-function Lesson({ lessonIndex, enrollment, setLesson }) {
+function Lesson({ lessonIndex, enrollment, setCompletedCount, setLesson }) {
 	const [loading, setLoading] = useState(false);
+	const { completeLesson, setToNull, error, message } = useContext(GlobalContext);
+	const token = authenticated();
 
 	function onClick() {
 		setLoading(true);
 		localStorage.setItem("lesson", JSON.stringify(lessonIndex + 1));
+		completeLesson(token, enrollment._id, {
+			complete: true,
+			lessonStatusId: enrollment.lessonStatus[lessonIndex]._id,
+		});
+		setCompletedCount(prev => (prev += 1));
 		setLesson(prev => prev + 1);
 		//complete goes here
 		setLoading(false);
 	}
 
+	useEffect(() => {
+		error && msg.error(error);
+		message && msg.success(message);
+		return () => {
+			setToNull();
+		};
+	}, [error, message]);
+
 	function onClick2() {
 		setLoading(true);
-		// complete goes here
+		completeLesson(token, enrollment._id, {
+			courseCompleted: true,
+			complete: true,
+			lessonStatusId: enrollment.lessonStatus[lessonIndex]._id,
+		});
+
 		setLoading(false);
 	}
-
-	console.log("index", lessonIndex);
 
 	return (
 		<Layout>
@@ -40,15 +60,16 @@ function Lesson({ lessonIndex, enrollment, setLesson }) {
 					Resource Url:
 					<Link> {enrollment.course.lessons[lessonIndex].resource_url}</Link>
 				</Row>
-				{lessonIndex === enrollment.course.lessons.length - 1 ? (
+				{enrollment.lessonStatus[lessonIndex].complete ? null : lessonIndex ===
+				  enrollment.course.lessons.length - 1 ? (
 					<Row style={{ marginTop: "65px" }} justify="center">
-						<Button onClick={onClick2} type="primary">
+						<Button loading={loading} onClick={onClick2} type="primary">
 							Complete!
 						</Button>
 					</Row>
 				) : (
 					<Row style={{ marginTop: "65px" }} justify="center">
-						<Button onClick={onClick} type="primary">
+						<Button loading={loading} onClick={onClick} type="primary">
 							Complete {"&"} next!
 						</Button>
 					</Row>
