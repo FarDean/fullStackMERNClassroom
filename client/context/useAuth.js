@@ -19,6 +19,7 @@ export default function useAuth() {
 		}
 
 		if (token) getUser();
+		if (!token) setUser(null);
 	}, [token]);
 
 	return { user, loading };
