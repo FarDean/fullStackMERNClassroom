@@ -15,17 +15,17 @@ const contentStyle = {
 	background: "#364d79",
 };
 
-export default function LPModal({ item }) {
+function LPModal({ item }) {
 	const { enroll, getStats, stats } = useContext(GlobalContext);
 	const [visible, setVisible] = useState(false);
 	const [redirect, setRedirect] = useState(false);
 	const [loading, setLoading] = useState(false);
 
-	useEffect(() => {
-		setLoading(true);
-		getStats(item._id);
-		setLoading(false);
-	}, []);
+	// useEffect(() => {
+	// 	setLoading(true);
+	// 	getStats(item._id);
+	// 	setLoading(false);
+	// }, []);
 
 	const showModal = () => {
 		setVisible(true);
@@ -90,13 +90,13 @@ export default function LPModal({ item }) {
 							)}
 						</section>
 						<section>Created: {item.createdAt.slice(0, 10)}</section>
-						<section>
+						{/* <section>
 							Enrolled Students: <Text type="danger">{stats.totalEnrolled}</Text>
 						</section>
 						<section>
 							Students completed this course:{" "}
 							<Text type="success">{stats.totalCompleted}</Text>
-						</section>
+						</section> */}
 					</>
 				)}
 			</Modal>
@@ -105,3 +105,4 @@ export default function LPModal({ item }) {
 		</List.Item>
 	);
 }
+export default React.memo(LPModal);
