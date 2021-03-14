@@ -93,7 +93,7 @@ const update = async (req, res) => {
 					error: "Photo couldn't be uploaded!",
 				});
 			}
-			console.log(fields);
+
 			let course = req.course;
 			course = extend(course, fields);
 			if (fields.lessons) {

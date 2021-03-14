@@ -77,7 +77,7 @@ const complete = async (req, res) => {
 		let updatedEnrollment = {};
 		updatedEnrollment["lessonStatus.$.complete"] = req.body.complete;
 		if (req.body.courseCompleted) updatedEnrollment.completed = req.body.courseCompleted;
-		console.log(updatedEnrollment);
+
 		await Enrollment.updateOne(
 			{ "lessonStatus._id": req.body.lessonStatusId },
 			{ $set: updatedEnrollment }

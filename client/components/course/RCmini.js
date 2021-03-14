@@ -59,9 +59,9 @@ export default function RCmini({ course, match }) {
 		formData.append("category", category);
 		formData.append("published", published);
 
-		for (var key of formData.entries()) {
-			console.log(key[0] + ", " + key[1]);
-		}
+		// for (var key of formData.entries()) {
+		// 	console.log(key[0] + ", " + key[1]);
+		// }
 
 		editCourse(authenticated(), match.params, formData);
 	};

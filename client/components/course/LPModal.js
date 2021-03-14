@@ -42,8 +42,6 @@ export default function LPModal({ item }) {
 		setVisible(false);
 	};
 
-	console.log(stats);
-
 	function getImgUrl(imgArr) {
 		return imgArr.map(img => (
 			<Image

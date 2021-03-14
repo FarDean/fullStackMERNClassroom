@@ -16,8 +16,6 @@ export default function Usercourses({ match }) {
 		setLoading(false);
 	}, []);
 
-	console.log(courseByUser);
-
 	if (loading) return <Spin />;
 	return (
 		<>

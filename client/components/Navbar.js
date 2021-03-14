@@ -48,7 +48,6 @@ export default function Navbar() {
 			<Menu.Item onClick={logout}>Log Out</Menu.Item>
 		</Menu>
 	) : null;
-	console.log(user);
 
 	return (
 		<Layout>
