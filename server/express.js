@@ -28,6 +28,9 @@ import path from "path";
 
 import Template from "./../template";
 
+// React Helmet
+import { Helmet } from "react-helmet";
+
 app.use(cors());
 app.use(compress());
 app.use(express.json());
@@ -53,8 +56,9 @@ app.get("/*", (req, res) => {
 			<MainRouter />
 		</StaticRouter>
 	);
+	const helmet = Helmet.renderStatic();
 	if (context.url) return res.redirect(303, context.url);
-	return res.status(200).send(Template(markup));
+	return res.status(200).send(Template({ markup, helmet }));
 });
 
 app.use((err, req, res, next) => {

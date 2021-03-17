@@ -3,7 +3,7 @@ import React from "react";
 import { Layout, Row, Col, Typography, Button } from "antd";
 
 const { Content } = Layout;
-const { Title, Paragraph, Text, Link } = Typography;
+const { Title } = Typography;
 
 function EnrollmentContent({ enrollment, setLesson }) {
 	return (

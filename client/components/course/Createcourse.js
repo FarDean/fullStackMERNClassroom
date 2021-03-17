@@ -1,183 +1,225 @@
-import React,{useState,useEffect,useContext} from 'react'
+import React, { useState, useEffect, useContext } from "react";
 import { GlobalContext } from "./../../context/GlobalContext";
-import { Divider,Layout,Row,Col,Form,Steps,Input,Upload,Button,Select,message as msg, } from "antd";
-import { LoadingOutlined,UploadOutlined } from '@ant-design/icons';
+import {
+	Divider,
+	Layout,
+	Row,
+	Col,
+	Form,
+	Steps,
+	Input,
+	Upload,
+	Button,
+	Select,
+	message as msg,
+} from "antd";
+import { LoadingOutlined, UploadOutlined } from "@ant-design/icons";
 import { authenticated } from "./../../helpers/api-auth";
-import FormData from 'form-data'
+import FormData from "form-data";
 import { Redirect } from "react-router-dom";
+import { Helmet } from "react-helmet";
 
-const {Step} = Steps;
-const {Option} = Select;
+const { Step } = Steps;
+const { Option } = Select;
 
 export default function Createcourse() {
-    const {error,message,setToNull,createCourse,course} = useContext(GlobalContext)
-    const [loading, setLoading] = useState(false)
-    const [redirect, setRedirect] = useState(false)
+	const { error, message, setToNull, createCourse, course } = useContext(GlobalContext);
+	const [loading, setLoading] = useState(false);
+	const [redirect, setRedirect] = useState(false);
 
-    const [name, setName] = useState('')
-    const [description, setDescription] = useState('')
-    const [images, setImages] = useState(null)
-    const [image2, setImage2] = useState(null)
-    const [category, setCategory] = useState('')
+	const [name, setName] = useState("");
+	const [description, setDescription] = useState("");
+	const [images, setImages] = useState(null);
+	const [image2, setImage2] = useState(null);
+	const [category, setCategory] = useState("");
 
-    const [fileList, setFileList] = useState([])
+	const [fileList, setFileList] = useState([]);
 
-    useEffect(() => {
-        error && msg.error(error)
-        message && msg.success(message)
-        return ()=>{
-            setToNull()
-        }
-    }, [error,message])
+	useEffect(() => {
+		error && msg.error(error);
+		message && msg.success(message);
+		return () => {
+			setToNull();
+		};
+	}, [error, message]);
 
-    const formItemLayout = {
-        labelCol: {
-          xs: { span: 22 },
-          sm: { span:24,offset: 2},
-          md: { span: 3},
-          lg: { span: 4},
-          xl: { span: 5}
-        },
-        wrapperCol: {
-            xs: { span: 24 },
-            sm: { span: 20,offset:2 },
-            md: {span:14,offset:0},
-            lg: {span:12,offset:0},
-            xl: {span:10,offset:0}
-        },
-      };
+	const formItemLayout = {
+		labelCol: {
+			xs: { span: 22 },
+			sm: { span: 24, offset: 2 },
+			md: { span: 3 },
+			lg: { span: 4 },
+			xl: { span: 5 },
+		},
+		wrapperCol: {
+			xs: { span: 24 },
+			sm: { span: 20, offset: 2 },
+			md: { span: 14, offset: 0 },
+			lg: { span: 12, offset: 0 },
+			xl: { span: 10, offset: 0 },
+		},
+	};
 
-      const normFile = (e) => {
-        // console.log(e.fileList.forEach((file,i)=>{
-        //     console.log(file.originFileObj);
-        // }))
+	const normFile = e => {
+		// console.log(e.fileList.forEach((file,i)=>{
+		//     console.log(file.originFileObj);
+		// }))
 
-        const kos = e.fileList.map(file=>{
-            return file.originFileObj
-        })
-        kos[0] && setImages(kos[0])
-        kos[1] && setImage2(kos[1])
-      };
+		const kos = e.fileList.map(file => {
+			return file.originFileObj;
+		});
+		kos[0] && setImages(kos[0]);
+		kos[1] && setImage2(kos[1]);
+	};
 
-      function onFinish() {
-          setLoading(true)
-          const course = new FormData()
-          course.append('name',name)
-          course.append('description',description)
+	function onFinish() {
+		setLoading(true);
+		const course = new FormData();
+		course.append("name", name);
+		course.append("description", description);
 
-          images && course.append(`images`,images)
-          image2 && course.append('image2',image2)
-          
-          course.append('category',category)
-        //   for (var key of course.entries()) {
-        //     console.log(key[0] + ', ' + key[1]);
-        // }
+		images && course.append(`images`, images);
+		image2 && course.append("image2", image2);
 
-          createCourse(authenticated(),course)
-          setLoading(false)
-          setRedirect(true)
-      }
+		course.append("category", category);
+		//   for (var key of course.entries()) {
+		//     console.log(key[0] + ', ' + key[1]);
+		// }
 
-      function beforeUpload(file) {
-          setFileList([...fileList,file])
-      }
+		createCourse(authenticated(), course);
+		setLoading(false);
+		setRedirect(true);
+	}
 
-      function onRemove(file) {
-          const index = fileList.indexOf(file)
-          const newFileList = fileList.slice()
-          newFileList.splice(index,1)
-          setFileList(newFileList)
-        }
+	function beforeUpload(file) {
+		setFileList([...fileList, file]);
+	}
 
+	function onRemove(file) {
+		const index = fileList.indexOf(file);
+		const newFileList = fileList.slice();
+		newFileList.splice(index, 1);
+		setFileList(newFileList);
+	}
 
-    return (
-        <Layout style={{minHeight:'95vh'}}>
-            <Divider orientation="left" style={{marginBottom:'95px'}}>Create new Course</Divider>
-            <Col style={{width:'65%',margin:'0 auto 45px auto',}}>
-                <Steps size="small" current={0}>
-                    <Step title="Create course" icon={<LoadingOutlined />} />
-                    <Step title="Add lessons" />
-                    <Step title={'Review '+'&'+' Publish!'} />
-                </Steps>
-            </Col>
+	return (
+		<Layout style={{ minHeight: "95vh" }}>
+			<Helmet>
+				<title>FarDean's Classroom - Create New Course</title>
 
-            <Row justify='center'>
-                <Col style={{width:'90%'}}>
-                    <Form
-                        {...formItemLayout}
-                        onFinish={onFinish}
-                    >
-                        <Form.Item
-                            name='name'
-                            label='Name'
-                            rules={[
-                                {
-                                    required:true,
-                                    message:'Name of the course is required!'
-                                }
-                            ]}
-                        >
-                            <Input onChange={e=>setName(e.target.value)} />
-                        </Form.Item>
-                        <Form.Item
-                            name='description'
-                            label='Description'
-                            rules={[
-                                {
-                                    required:true,
-                                    message:'Description is required!'
-                                },
-                                {
-                                    pattern:/^.{15,35}$/,
-                                    message:'Description should min 15 and max 35 characters!'
-                                }
-                            ]}
-                        >
-                            <Input.TextArea onChange={e=>setDescription(e.target.value)} />
-                        </Form.Item>
-                        <Form.Item label="Image">
-                            <Form.Item name="images" valuePropName="fileList" getValueFromEvent={normFile} noStyle>
-                            <Upload
-                                listType="text"
-                                maxCount={2}
-                                multiple
-                                beforeUpload={beforeUpload}
-                                onRemove={onRemove}
-                                >
-                                <Button icon={<UploadOutlined />}>Upload (Max: 2)</Button>
-                                </Upload>
-                            </Form.Item>
-                        </Form.Item>
-                        <Form.Item
-                            name='category'
-                            label='Category'
-                            rules={[
-                                {
-                                    required:true,
-                                    message:'Please select a category!'
-                                }
-                            ]}
-                        >
-                            <Select style={{ width: 120 }} onChange={e=>setCategory(e)}>
-                                <Option value="Design">Design</Option>
-                                <Option value="It and Software">It and Software</Option>
-                                <Option value="Development">Development</Option>
-                                <Option value="Marketing">Marketing</Option>
-                            </Select>
-                        </Form.Item>
-                        <Row justify='center'>
-                            <Col>
-                                <Form.Item>
-                                    <Button type="primary" htmlType="submit" loading={loading}>
-                                    Next step: Add Lessons!
-                                    </Button>
-                                </Form.Item>
-                            </Col>
-                        </Row>
-                    </Form>
-                </Col>
-            </Row>
-            {redirect && <Redirect to={`/course/addlesson/${course._id}`}  />}
-        </Layout>
-    )
+				<meta name="title" content="FarDean's Classroom - Create New Course" />
+				<meta
+					name="description"
+					content="A classroom app made by React.
+                It's only a Demo"
+				/>
+
+				<meta property="og:type" content="website" />
+				<meta property="og:title" content="FarDean's Classroom - Create New Course" />
+				<meta
+					property="og:description"
+					content="A classroom app made by React.
+                It's only a Demo"
+				/>
+
+				<meta property="twitter:card" content="summary_large_image" />
+				<meta property="twitter:title" content="FarDean's Classroom - Create New Course" />
+				<meta
+					property="twitter:description"
+					content="A classroom app made by React.
+                It's only a Demo"
+				/>
+			</Helmet>
+			<Divider orientation="left" style={{ marginBottom: "95px" }}>
+				Create new Course
+			</Divider>
+			<Col style={{ width: "65%", margin: "0 auto 45px auto" }}>
+				<Steps size="small" current={0}>
+					<Step title="Create course" icon={<LoadingOutlined />} />
+					<Step title="Add lessons" />
+					<Step title={"Review " + "&" + " Publish!"} />
+				</Steps>
+			</Col>
+
+			<Row justify="center">
+				<Col style={{ width: "90%" }}>
+					<Form {...formItemLayout} onFinish={onFinish}>
+						<Form.Item
+							name="name"
+							label="Name"
+							rules={[
+								{
+									required: true,
+									message: "Name of the course is required!",
+								},
+							]}
+						>
+							<Input onChange={e => setName(e.target.value)} />
+						</Form.Item>
+						<Form.Item
+							name="description"
+							label="Description"
+							rules={[
+								{
+									required: true,
+									message: "Description is required!",
+								},
+								{
+									pattern: /^.{15,35}$/,
+									message: "Description should min 15 and max 35 characters!",
+								},
+							]}
+						>
+							<Input.TextArea onChange={e => setDescription(e.target.value)} />
+						</Form.Item>
+						<Form.Item label="Image">
+							<Form.Item
+								name="images"
+								valuePropName="fileList"
+								getValueFromEvent={normFile}
+								noStyle
+							>
+								<Upload
+									listType="text"
+									maxCount={2}
+									multiple
+									beforeUpload={beforeUpload}
+									onRemove={onRemove}
+								>
+									<Button icon={<UploadOutlined />}>Upload (Max: 2)</Button>
+								</Upload>
+							</Form.Item>
+						</Form.Item>
+						<Form.Item
+							name="category"
+							label="Category"
+							rules={[
+								{
+									required: true,
+									message: "Please select a category!",
+								},
+							]}
+						>
+							<Select style={{ width: 120 }} onChange={e => setCategory(e)}>
+								<Option value="Design">Design</Option>
+								<Option value="It and Software">It and Software</Option>
+								<Option value="Development">Development</Option>
+								<Option value="Marketing">Marketing</Option>
+							</Select>
+						</Form.Item>
+						<Row justify="center">
+							<Col>
+								<Form.Item>
+									<Button type="primary" htmlType="submit" loading={loading}>
+										Next step: Add Lessons!
+									</Button>
+								</Form.Item>
+							</Col>
+						</Row>
+					</Form>
+				</Col>
+			</Row>
+			{redirect && <Redirect to={`/course/addlesson/${course._id}`} />}
+		</Layout>
+	);
 }

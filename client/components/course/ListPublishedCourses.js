@@ -2,6 +2,7 @@ import React, { useEffect, useContext, useState } from "react";
 import { GlobalContext } from "./../../context/GlobalContext";
 import { Divider, Layout, List, Col, Spin, message as msg } from "antd";
 import LPModal from "./LPModal";
+import { Helmet } from "react-helmet";
 
 const layout = {
 	xs: { span: 24 },
@@ -34,6 +35,32 @@ export default function ListPublishedCourses() {
 	if (loading) return <Spin />;
 	return (
 		<Layout style={{ minHeight: "95vh" }}>
+			<Helmet>
+				<title>FarDean's Classroom - Published Courses</title>
+
+				<meta name="title" content="FarDean's Classroom - Published Courses" />
+				<meta
+					name="description"
+					content="A classroom app made by React.
+                It's only a Demo"
+				/>
+
+				<meta property="og:type" content="website" />
+				<meta property="og:title" content="FarDean's Classroom - Published Courses" />
+				<meta
+					property="og:description"
+					content="A classroom app made by React.
+                It's only a Demo"
+				/>
+
+				<meta property="twitter:card" content="summary_large_image" />
+				<meta property="twitter:title" content="FarDean's Classroom - Published Courses" />
+				<meta
+					property="twitter:description"
+					content="A classroom app made by React.
+                It's only a Demo"
+				/>
+			</Helmet>
 			<Divider orientation="left" style={{ marginBottom: "95px" }}>
 				Published Courses
 			</Divider>

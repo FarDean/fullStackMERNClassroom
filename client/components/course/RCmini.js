@@ -18,6 +18,7 @@ import {
 } from "antd";
 import { LoadingOutlined, CloseOutlined, CheckOutlined, UploadOutlined } from "@ant-design/icons";
 import _ from "lodash";
+import { Helmet } from "react-helmet";
 
 const { Step } = Steps;
 const { Option } = Select;
@@ -88,6 +89,35 @@ export default function RCmini({ course, match }) {
 	return (
 		<>
 			<Layout style={{ minHeight: "95vh" }}>
+				<Helmet>
+					<title>FarDean's Classroom - Review and Publish!</title>
+
+					<meta name="title" content="FarDean's Classroom - Review and Publish!" />
+					<meta
+						name="description"
+						content="A classroom app made by React.
+                It's only a Demo"
+					/>
+
+					<meta property="og:type" content="website" />
+					<meta property="og:title" content="FarDean's Classroom - Review and Publish!" />
+					<meta
+						property="og:description"
+						content="A classroom app made by React.
+                It's only a Demo"
+					/>
+
+					<meta property="twitter:card" content="summary_large_image" />
+					<meta
+						property="twitter:title"
+						content="FarDean's Classroom - Review and Publish!"
+					/>
+					<meta
+						property="twitter:description"
+						content="A classroom app made by React.
+                It's only a Demo"
+					/>
+				</Helmet>
 				<Divider orientation="left" style={{ marginBottom: "95px" }}>
 					Review {"&"} Publish
 				</Divider>

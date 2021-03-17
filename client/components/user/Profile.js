@@ -23,6 +23,7 @@ import { Link } from "react-router-dom";
 import Usercourses from "./Usercourses";
 import _ from "lodash";
 import slugify from "slugify";
+import { Helmet } from "react-helmet";
 
 const { Meta } = Card;
 const { Content } = Layout;
@@ -101,6 +102,43 @@ export default function Profile({ match }) {
 	if (_.isEmpty(user) || loading) return <Spin />;
 	return (
 		<Layout>
+			<Helmet>
+				<title>
+					FarDean's Classroom - {user.first_name} {user.last_name}
+				</title>
+
+				<meta
+					name="title"
+					content={`FarDean's Classroom ${user.first_name} ${user.last_name}`}
+				/>
+				<meta
+					name="description"
+					content="A classroom app made by React.
+                It's only a Demo"
+				/>
+
+				<meta property="og:type" content="website" />
+				<meta
+					property="og:title"
+					content={`FarDean's Classroom ${user.first_name} ${user.last_name}`}
+				/>
+				<meta
+					property="og:description"
+					content="A classroom app made by React.
+                It's only a Demo"
+				/>
+
+				<meta property="twitter:card" content="summary_large_image" />
+				<meta
+					property="twitter:title"
+					content={`FarDean's Classroom ${user.first_name} ${user.last_name}`}
+				/>
+				<meta
+					property="twitter:description"
+					content="A classroom app made by React.
+                It's only a Demo"
+				/>
+			</Helmet>
 			<Content className="site-layout-background" style={{ minHeight: "95vh" }}>
 				<Divider orientation="left" style={{ marginBottom: "95px" }}>
 					Profile

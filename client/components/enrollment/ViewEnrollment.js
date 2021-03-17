@@ -1,7 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Layout, Menu, Spin, Alert } from "antd";
+import { Layout, Menu, Spin, Alert, message as msg } from "antd";
 import { LaptopOutlined, NotificationOutlined } from "@ant-design/icons";
-import { Switch, Link } from "react-router-dom";
 import { GlobalContext } from "./../../context/GlobalContext";
 import { authenticated } from "./../../helpers/api-auth";
 import { isEmpty } from "lodash";
@@ -13,24 +12,34 @@ const { Sider } = Layout;
 const { SubMenu } = Menu;
 
 function ViewEnrollment({ match }) {
-	const { getEnrollment, enrollment } = useContext(GlobalContext);
-	const [loading, setLoading] = useState(false);
+	const { getEnrollment, enrollment, error, message, setToNull } = useContext(GlobalContext);
+	const [loading, setLoading] = useState(true);
 	const [completedCount, setCompletedCount] = useState(0);
 	const [alert, setAlert] = useState(false);
 
-	const [lesson, setLesson] = useState(JSON.parse(localStorage.getItem("lesson")));
+	const [lesson, setLesson] = useState(
+		JSON.parse(localStorage.getItem(`${match.params.enrollmentId}`))
+	);
 
 	useEffect(() => {
 		setLoading(true);
 		getEnrollment(authenticated(), match.params);
-
 		setLoading(false);
 	}, [match.params]);
+
 	useEffect(() => {
 		!isEmpty(enrollment) &&
 			setCompletedCount(enrollment.lessonStatus.filter(x => x.complete).length);
 		if (enrollment.completed) setAlert(true);
+		return () => setAlert(false);
 	}, [enrollment]);
+	useEffect(() => {
+		error && msg.error(error);
+		message && msg.success(message);
+		return () => {
+			setToNull();
+		};
+	}, [error, message]);
 
 	if (loading || isEmpty(enrollment)) return <Spin />;
 	return (
@@ -65,6 +74,7 @@ function ViewEnrollment({ match }) {
 						setCompletedCount={setCompletedCount}
 						enrollment={enrollment}
 						setLesson={setLesson}
+						match={match}
 					/>
 				) : (
 					<EnrollmentContent enrollment={enrollment} setLesson={setLesson} />

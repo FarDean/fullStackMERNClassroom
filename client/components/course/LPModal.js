@@ -16,7 +16,7 @@ const contentStyle = {
 };
 
 function LPModal({ item }) {
-	const { enroll, getStats, stats } = useContext(GlobalContext);
+	const { enroll } = useContext(GlobalContext);
 	const [visible, setVisible] = useState(false);
 	const [redirect, setRedirect] = useState(false);
 	const [loading, setLoading] = useState(false);

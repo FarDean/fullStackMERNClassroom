@@ -13,12 +13,15 @@ import {
 	Switch,
 	Button,
 	Popconfirm,
+	Spin,
 } from "antd";
 import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
 import FormData from "form-data";
 import { Redirect } from "react-router-dom";
 import Layout from "antd/lib/layout/layout";
 import jwtDecode from "jwt-decode";
+import { Helmet } from "react-helmet";
+import { isEmpty } from "lodash";
 
 export default function Editprofile({ match }) {
 	const {
@@ -153,8 +156,35 @@ export default function Editprofile({ match }) {
 		setdeleteRedirect(true);
 	}
 
+	if (isEmpty(personalInfo)) return <Spin />;
 	return (
 		<Layout style={{ minHeight: "95vh" }}>
+			<Helmet>
+				<title>FarDean's Classroom - Edit Profile</title>
+
+				<meta name="title" content="FarDean's Classroom - Edit Profile" />
+				<meta
+					name="description"
+					content="A classroom app made by React.
+                It's only a Demo"
+				/>
+
+				<meta property="og:type" content="website" />
+				<meta property="og:title" content="FarDean's Classroom - Edit Profile" />
+				<meta
+					property="og:description"
+					content="A classroom app made by React.
+                It's only a Demo"
+				/>
+
+				<meta property="twitter:card" content="summary_large_image" />
+				<meta property="twitter:title" content="FarDean's Classroom - Edit Profile" />
+				<meta
+					property="twitter:description"
+					content="A classroom app made by React.
+                It's only a Demo"
+				/>
+			</Helmet>
 			<Divider orientation="left" style={{ marginBottom: "95px" }}>
 				Edit Profile
 			</Divider>

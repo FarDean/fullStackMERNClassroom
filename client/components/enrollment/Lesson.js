@@ -2,18 +2,20 @@ import React, { useState, useContext, useEffect } from "react";
 import { Layout, Row, Typography, Divider, Button, message as msg } from "antd";
 import { GlobalContext } from "./../../context/GlobalContext";
 import { authenticated } from "./../../helpers/api-auth";
+import { Redirect } from "react-router-dom";
 
 const { Content } = Layout;
 const { Link, Title, Paragraph } = Typography;
 
-function Lesson({ lessonIndex, enrollment, setCompletedCount, setLesson }) {
+function Lesson({ lessonIndex, enrollment, setCompletedCount, setLesson, match }) {
 	const [loading, setLoading] = useState(false);
-	const { completeLesson, setToNull, error, message } = useContext(GlobalContext);
+	const { completeLesson } = useContext(GlobalContext);
 	const token = authenticated();
+	const [redirect, setRedirect] = useState(false);
 
 	function onClick() {
 		setLoading(true);
-		localStorage.setItem("lesson", JSON.stringify(lessonIndex + 1));
+		localStorage.setItem(`${match.params.enrollmentId}`, JSON.stringify(lessonIndex + 1));
 		completeLesson(token, enrollment._id, {
 			complete: true,
 			lessonStatusId: enrollment.lessonStatus[lessonIndex]._id,
@@ -24,14 +26,6 @@ function Lesson({ lessonIndex, enrollment, setCompletedCount, setLesson }) {
 		setLoading(false);
 	}
 
-	useEffect(() => {
-		error && msg.error(error);
-		message && msg.success(message);
-		return () => {
-			setToNull();
-		};
-	}, [error, message]);
-
 	function onClick2() {
 		setLoading(true);
 		completeLesson(token, enrollment._id, {
@@ -39,7 +33,7 @@ function Lesson({ lessonIndex, enrollment, setCompletedCount, setLesson }) {
 			complete: true,
 			lessonStatusId: enrollment.lessonStatus[lessonIndex]._id,
 		});
-
+		setRedirect(true);
 		setLoading(false);
 	}
 
@@ -75,6 +69,7 @@ function Lesson({ lessonIndex, enrollment, setCompletedCount, setLesson }) {
 					</Row>
 				)}
 			</Content>
+			{redirect && <Redirect to="/" />}
 		</Layout>
 	);
 }
