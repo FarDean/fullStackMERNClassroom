@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useCallback, useContext, useEffect, useState } from "react";
 import { Layout, Menu, Spin, Alert, message as msg } from "antd";
 import { LaptopOutlined, NotificationOutlined } from "@ant-design/icons";
 import { GlobalContext } from "./../../context/GlobalContext";
@@ -41,6 +41,11 @@ function ViewEnrollment({ match }) {
 		};
 	}, [error, message]);
 
+	const setLessonStorage = i => {
+		localStorage.setItem(`${match.params.enrollmentId}`, JSON.stringify(i));
+		setLesson(i);
+	};
+
 	if (loading || isEmpty(enrollment)) return <Spin />;
 	return (
 		<>
@@ -54,7 +59,7 @@ function ViewEnrollment({ match }) {
 						</Menu.Item>
 						<SubMenu key="sub2" icon={<LaptopOutlined />} title="Lessons">
 							{enrollment.course.lessons.map((lesson, i) => (
-								<Menu.Item onClick={() => setLesson(i)} key={i}>
+								<Menu.Item onClick={() => setLessonStorage(i)} key={i}>
 									{enrollment.lessonStatus[i].complete ? (
 										<p style={{ textDecoration: "line-through" }}>
 											{lesson.title}
