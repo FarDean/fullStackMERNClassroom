@@ -1,8 +1,10 @@
-if (process.env.NODE_ENV !== "production") {
-	require("dotenv").config();
-}
 import express from "express";
-const app = express();
+import path from "path";
+
+import Template from "./../template";
+
+// React Helmet
+import { Helmet } from "react-helmet";
 
 import cors from "cors";
 import compress from "compression";
@@ -19,17 +21,15 @@ import React from "react";
 import { renderToString } from "react-dom/server";
 import { StaticRouter } from "react-router-dom";
 import MainRouter from "./../client/MainRouter";
+if (process.env.NODE_ENV !== "production") {
+	require("dotenv").config();
+}
 
-import { compile } from "./devBundle";
-compile(app);
+// import { compile } from "./devBundle";
+const app = express();
+// compile(app);
 
 const CURRENT_WORKING_DIRECTORY = process.cwd();
-import path from "path";
-
-import Template from "./../template";
-
-// React Helmet
-import { Helmet } from "react-helmet";
 
 app.use(cors());
 app.use(compress());
