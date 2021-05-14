@@ -32,7 +32,7 @@ export default function Home() {
                 It's only a Demo"
 				/>
 			</Helmet>
-			kos
+			Home Page!
 		</Layout>
 	);
 }

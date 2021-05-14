@@ -88,7 +88,6 @@ export default function Createcourse() {
 
 		createCourse(authenticated(), course);
 		setLoading(false);
-		setRedirect(true);
 	}
 
 	function beforeUpload(file) {
@@ -219,7 +218,7 @@ export default function Createcourse() {
 					</Form>
 				</Col>
 			</Row>
-			{redirect && <Redirect to={`/course/addlesson/${course._id}`} />}
+			{redirect && <Redirect push to={`/course/addlesson/${course._id}`} />}
 		</Layout>
 	);
 }
